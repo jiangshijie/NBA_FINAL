@@ -213,7 +213,7 @@
                             svg.selectAll("g.barChart").remove();
                             svg.selectAll("g.randar").remove();
                             drawBar(d.abb,"PTS");
-                            drawRandarChart(d.abb,[0,900]);
+                            drawRandarChart([d.abb],[0,900]);
 
                         });
 //                        .style("cursor", "pointer")
@@ -365,10 +365,10 @@ function drawBar(key, aspect) {
             bar.classed("selecting", !d3.event.target.empty());
             svg.selectAll("g.randarChart").remove();
             if (d3.event.target.empty()){
-                drawRandarChart(team,[0,900]);
+                drawRandarChart([team],[0,900]);
             } else {
                 var s = d3.event.target.extent();
-                drawRandarChart(team,d3.event.target.extent());
+                drawRandarChart([team],d3.event.target.extent());
                 var dict = d3.nest()
                         .key(function(d){return d.TEAM_ABBREVIATION})
                         .key(function(d){ if(s[0] <= x(d.GAME_DATE) && x(d.GAME_DATE) <= s[1]) return (d)})
@@ -412,7 +412,7 @@ function drawBar(key, aspect) {
         }
     }
 
-    function drawRandarChart(key,range) {
+    function drawRandarChart(key_list,range) {
     d3.csv("data.csv", function (data) {
         x.domain(data.map(function (d) {
             return d.GAME_DATE;
@@ -444,7 +444,12 @@ function drawBar(key, aspect) {
         //data3 = data2.map(function(d){return d.values.map(function(dd){return dd.AST}).reduce(add,0)})
 
         //get team id here
-        var team = key;
+
+        team_list = []
+        for (var i = 0; i < key_list.length; i++){
+
+
+        var team = key_list[i];
         //get team data
         teamd = data2.filter(function (d) {
 
@@ -477,9 +482,10 @@ function drawBar(key, aspect) {
             r_data.push({axis: d_list[i], value: team_i / max_i})
 
         }
-
-        team_list = []
         team_list.push(r_data)
+    }
+        
+        
 
 
         //code from cinnamon
