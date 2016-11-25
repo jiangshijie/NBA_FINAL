@@ -1520,6 +1520,7 @@ compare(["OKC","UTA"])
                         return radarLine(d);
                     })
                     .style("fill", function (d, i) {
+                        console.log(cfg.color)
                         return cfg.color(i);
                     })
                     .style("fill-opacity", cfg.opacityArea)
