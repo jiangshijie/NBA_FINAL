@@ -168,7 +168,7 @@
                         .attr("transform", function(d) {
                             return "translate(" + projection([d.lon, d.lat])[0] + "," + projection([d.lon, d.lat])[1] + ")";});
 
-
+                var teamList = [];
 
                 //Circles for teams
                 nodes.append("circle")
@@ -185,9 +185,9 @@
                         .attr("stroke","white")
                         .attr("stroke-width",0.5)
                         .on("mouseover",function(d){
-                            console.log(d.teamname);
-                            console.log(d3.event.pageX);
-                            console.log(d3.event.pageY);
+//                            console.log(d.teamname);
+//                            console.log(d3.event.pageX);
+//                            console.log(d3.event.pageY);
                             div.transition()
                                     .duration(200)
                                     .style("opacity", .9);
@@ -201,20 +201,37 @@
                                     .style("opacity", 0);
                         })
                         .on("click", function(d){
-                            d3.selectAll("circle").style("fill",function(d){
-                                if (d.EASTorWEST == "East") {
-                                    return "blue";
-                                } else {
-                                    return "red";
-                                };
-                            });
+//                            d3.selectAll("circle").style("fill",function(d){
+//                                if (d.EASTorWEST == "East") {
+//                                    return "blue";
+//                                } else {
+//                                    return "red";
+//                                };
+//                            });
                             team = d.abb;
-                            d3.select(this).style("fill", "yellow");
+                            var color;
+                            if (teamList.indexOf(team)==-1 && teamList.length >= 2) {
+                                alert("Cannot select more than two node");
+                                return;
+                            } else if (teamList.indexOf(team) == -1 && teamList.length < 2) {
+                                teamList.push(team);
+                                color = 'yellow';
+                            } else if (teamList.indexOf(team)!= -1) {
+                                if (d.EASTorWEST == 'East'){
+                                    color = 'blue';
+                                } else {
+                                    color = 'red';
+                                }
+                                teamList.splice(teamList.indexOf(team), 1);
+                            }
+                            d3.select(this).style("fill", color);
                             svg.selectAll("g.barChart").remove();
                             svg.selectAll("g.randar").remove();
                             drawBar(d.abb,"PTS");
-                            drawRandarChart(d.abb,[0,900]);
-
+                            drawRandarChart([d.abb],[0,900]);
+                            console.log(teamList);
+                            drawBar(teamList,'PTS');
+                            drawRandarChart(teamList,[0,900]);
                         });
 //                        .style("cursor", "pointer")
 
@@ -365,10 +382,10 @@ function drawBar(key, aspect) {
             bar.classed("selecting", !d3.event.target.empty());
             svg.selectAll("g.randarChart").remove();
             if (d3.event.target.empty()){
-                drawRandarChart(team,[0,900]);
+                drawRandarChart([team],[0,900]);
             } else {
                 var s = d3.event.target.extent();
-                drawRandarChart(team,d3.event.target.extent());
+                drawRandarChart([team],d3.event.target.extent());
                 var dict = d3.nest()
                         .key(function(d){return d.TEAM_ABBREVIATION})
                         .key(function(d){ if(s[0] <= x(d.GAME_DATE) && x(d.GAME_DATE) <= s[1]) return (d)})
@@ -382,8 +399,7 @@ function drawBar(key, aspect) {
                                 min = val;
                             }
                     });
-                console.log("min: " + min);
-
+//                console.log("min: " + min);
                 d3.selectAll("circle")
                         .transition()
                         .attr("r", function(d){
@@ -393,7 +409,7 @@ function drawBar(key, aspect) {
 //                                console.log(key);
                                 if (key.key== d.abb) {
                                     val = key.values[0].values.PTS
-                                    console.log(key.values[0].values.PTS);
+//                                    console.log(key.values[0].values.PTS);
                                 }
                             })
 
@@ -412,7 +428,7 @@ function drawBar(key, aspect) {
         }
     }
 
-    function drawRandarChart(key,range) {
+    function drawRandarChart(key_list,range) {
     d3.csv("data.csv", function (data) {
         x.domain(data.map(function (d) {
             return d.GAME_DATE;
@@ -444,7 +460,12 @@ function drawBar(key, aspect) {
         //data3 = data2.map(function(d){return d.values.map(function(dd){return dd.AST}).reduce(add,0)})
 
         //get team id here
-        var team = key;
+
+        team_list = []
+        for (var i = 0; i < key_list.length; i++){
+
+
+        var team = key_list[i];
         //get team data
         teamd = data2.filter(function (d) {
 
@@ -477,9 +498,10 @@ function drawBar(key, aspect) {
             r_data.push({axis: d_list[i], value: team_i / max_i})
 
         }
-
-        team_list = []
         team_list.push(r_data)
+    }
+        
+        
 
 
         //code from cinnamon
