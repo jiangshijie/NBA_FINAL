@@ -228,8 +228,7 @@
                             svg.selectAll("g.barChart").remove();
                             svg.selectAll("g.randar").remove();
                             drawBar(d.abb,"PTS");
-                            drawRandarChart([d.abb],[0,900]);
-                            console.log(teamList);
+                            
                             drawBar(teamList,'PTS');
                             drawRandarChart(teamList,[0,900]);
                         });
@@ -305,10 +304,11 @@
         //get team id here
 
         team_list = []
-        for (var i = 0; i < key_list.length; i++){
+        console.log(key_list.length);
+        for (var j = 0; j < key_list.length; j++){
 
-
-        var team = key_list[i];
+        var team = key_list[j];
+        console.log(team)
         //get team data
         teamd = data2.filter(function (d) {
 
@@ -341,8 +341,10 @@
             r_data.push({axis: d_list[i], value: team_i / max_i})
 
         }
+        console.log(i);
         team_list.push(r_data)
     }
+    console.log(team_list)
         
         
 
