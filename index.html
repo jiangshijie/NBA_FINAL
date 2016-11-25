@@ -213,7 +213,7 @@
                             svg.selectAll("g.barChart").remove();
                             svg.selectAll("g.randar").remove();
                             drawBar(d.abb,"PTS");
-                            drawRandarChart([d.abb],[0,900]);
+                            drawRandarChart([d.abb,'DET'],[0,900]);
 
                         });
 //                        .style("cursor", "pointer")
@@ -413,6 +413,7 @@ function drawBar(key, aspect) {
     }
 
     function drawRandarChart(key_list,range) {
+        console.log(key_list);
     d3.csv("data.csv", function (data) {
         x.domain(data.map(function (d) {
             return d.GAME_DATE;
@@ -446,7 +447,8 @@ function drawBar(key, aspect) {
         //get team id here
 
         team_list = []
-        for (var i = 0; i < key_list.length; i++){
+        for (var i = 0; i < key_list.length+1; i++){
+            console.log(key_list),console.log(i)
 
 
         var team = key_list[i];
@@ -467,6 +469,7 @@ function drawBar(key, aspect) {
 
 
         for (var i = 0; i < d_list.length; i++) {
+
             max_i = Math.max.apply(null, data2.map(function (d) {
                 return d.values.filter(function(d){
 //            console.log(d.GAME_DATE);
@@ -482,9 +485,11 @@ function drawBar(key, aspect) {
             r_data.push({axis: d_list[i], value: team_i / max_i})
 
         }
+        console.log(r_data)
         team_list.push(r_data)
     }
-        
+     
+    console.log(team_list)   
         
 
 
