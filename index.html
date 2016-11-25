@@ -1567,7 +1567,7 @@
                 //////// Append invisible circles for tooltip ///////////
                 /////////////////////////////////////////////////////////
 
-<<<<<<< HEAD
+
             //Append the backgrounds
             blobWrapper
                     .append("path")
@@ -1596,13 +1596,13 @@
                                 .transition().duration(200)
                                 .style("fill-opacity", cfg.opacityArea);
                     });
-=======
+
                 //Wrapper for the invisible circles on top
                 var blobCircleWrapper = g.selectAll(".radarCircleWrapper")
                         .data(data)
                         .enter().append("g")
                         .attr("class", "radarCircleWrapper");
->>>>>>> origin/master
+
 
                 //Append a set of invisible circles on top for the mouseover pop-up
                 blobCircleWrapper.selectAll(".radarInvisibleCircle")
