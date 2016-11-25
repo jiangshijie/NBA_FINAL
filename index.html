@@ -227,10 +227,8 @@
                             d3.select(this).style("fill", color);
                             svg.selectAll("g.barChart").remove();
                             svg.selectAll("g.randar").remove();
-                            drawBar(d.abb,"PTS");
                             drawRandarChart([d.abb],[0,900]);
                             console.log(teamList);
-                            drawBar(teamList,'PTS');
                             drawRandarChart(teamList,[0,900]);
                         });
 //                        .style("cursor", "pointer")
@@ -549,7 +547,6 @@
                         d3.select(this).classed("text_color",true);
 //                        this.transition().style("font-size","22px");
                         svg.selectAll("g.barChart").remove();
-                        drawBar(team,d);
 
                         d3.csv("data.csv", function (data) {
                             x.domain(data.map(function (d) {
