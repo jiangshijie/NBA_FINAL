@@ -980,7 +980,7 @@ path.area {
                 .attr("opacity", 1)
     }
 
-    compare(["OKC","UTA"])
+
 
 
 
@@ -998,7 +998,7 @@ path.area {
 
     //Define map projection
     var projection = d3.geo.albersUsa()
-            .translate([width/3, height/3.5 + 100])
+            .translate([width/3, height/3.5 + 80])
             .scale([900]);
 
 
@@ -1152,6 +1152,11 @@ path.area {
                                 teamList.splice(teamList.indexOf(team), 1);
                             }
                             d3.select(this).style("fill", color);
+                            if (teamList.length == 2) {
+                                compare(teamList);
+                            } else {
+                                svg.selectAll("span").remove();
+                            }
                             svg.selectAll("g.barChart").remove();
                             svg.selectAll("g.randar").remove();
                             console.log(teamList);
