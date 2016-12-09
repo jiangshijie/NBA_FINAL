@@ -5,7 +5,14 @@
     <title>Title</title>
     <script src="//d3js.org/d3.v3.min.js"></script>
     <script src="http://d3js.org/topojson.v1.min.js"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <style>
+        div.google-visualization-tooltip {
+            font-size:  15px !important;
+            padding:3px;
+
+
+        }
         .text_color {
             fill:red;
         }
@@ -103,6 +110,8 @@ path.area {
 </head>
 <body>
 <script>
+
+
     function compare(teams){
         team1 = teams[0]
         team2 = teams[1]
@@ -267,6 +276,80 @@ path.area {
         })
     }
 
+    //calendarChart();
+    function calendarChart(team) {
+
+        d3.csv('data.csv',function(d) {
+            d.PLUS_MINUS = + d.PLUS_MINUS;
+            d.PTS = +d.PTS;
+            return d;
+        },function(error, data) {
+            if (error) throw error;
+            var datarow=[];
+            var min= 1000;
+            var max = -1000;
+            var teams;
+            data.forEach(function(d){
+                if (d.TEAM_ABBREVIATION == team) {
+                    var date = d.GAME_DATE.split('/');
+                    function toNumber(d){
+                        return +d;
+                    }
+                    if (min > d.PLUS_MINUS) {
+                        min = d.PLUS_MINUS;
+                    }
+                    if (max < d.PLUS_MINUS) {
+                        max = d.PLUS_MINUS;
+                    }
+                    date.map(toNumber);
+//                    console.log(new Date('20'+date[2],date[0],date[1]));
+//                    console.log(d.MATCHUP);
+                    datarow.push([new Date('20'+date[2],date[0],date[1]), d.PLUS_MINUS, d.MATCHUP, d.GAME_ID, d.GAME_DATE +"\n\t" + team + "-" + d.PTS + " : " + d.MATCHUP.slice(-3) + "-" + (d.PTS + d.PLUS_MINUS)]);
+                }
+
+
+            });
+            google.charts.load("current", {packages:["calendar"]});
+            google.charts.setOnLoadCallback(drawChart);
+            function drawChart(){
+                var dataTable = new google.visualization.DataTable();
+                dataTable.addColumn({ type: 'date', id: 'Date' });
+                dataTable.addColumn({ type: 'number', id: 'Won/Loss' });
+                dataTable.addColumn({type: 'string', role: 'tooltip'});
+                dataTable.addColumn({type: 'string', role: 'tooltip'});
+                dataTable.addColumn({type: 'string', role: 'tooltip'})
+                dataTable.addRows(datarow);
+                var chart = new google.visualization.Calendar(document.getElementById('calendar'));
+
+                var options = {
+                    title: "Compitition Game",
+                    height: 350,
+                    width:1000,
+                    colorAxis:{minValue: min, maxValue:max},
+                    tooltip: { isHtml: true }
+                };
+
+                chart.draw(dataTable, options);
+//                var teams = chart.Value();
+
+                google.visualization.events.addListener(chart, 'select', selectHandler);
+                console.log(chart);
+
+                function selectHandler() {
+                    console.log(chart.getSelection());
+                    var row = chart.getSelection()[0].row;
+                    var game_id = datarow[row][3];
+                    var game = data.filter(function(d){return d.GAME_ID == game_id});
+                console.log(game);
+//                drawRandarChart(teams,[0,900]);
+                  detail_1(game[0]);
+                    detail_2(game[1]);
+                }
+            }
+
+        });
+    }
+
     function filter(data, team1, team2){
         var data1 = []
         var data2 = []
@@ -293,6 +376,7 @@ path.area {
     }
 
     function detail_1(game){
+        console.log(game);
         var width = 500;
         var height = 450;
         var svg = d3.select("#team1")
@@ -980,16 +1064,6 @@ path.area {
                 .attr("opacity", 1)
     }
 
-
-
-
-
-
-
-
-
-
-
     var team;
     var margin = {left:30, right : 30, top:300, bottom: 0};
     var width = 1100 + margin.left + margin.right,
@@ -1141,6 +1215,7 @@ path.area {
                                 alert("Cannot select more than two teams");
                                 return;
                             } else if (teamList.indexOf(team) == -1 && teamList.length < 2) {
+
                                 teamList.push(team);
                                 color = 'yellow';
                             } else if (teamList.indexOf(team)!= -1) {
@@ -1152,10 +1227,19 @@ path.area {
                                 teamList.splice(teamList.indexOf(team), 1);
                             }
                             d3.select(this).style("fill", color);
+                            if (teamList.length == 0) {
+                                document.getElementById("calendar").innerHTML="";
+                            }
+                            if (teamList.length == 1) {
+                                calendarChart(teamList[0]);
+                            }
                             if (teamList.length == 2) {
                                 compare(teamList);
+                                document.getElementById("team1").innerHTML="";
+                                document.getElementById("team2").innerHTML="";
+                                document.getElementById("calendar").innerHTML="";
                             } else {
-                                console.log("d3.selectAll()");
+//                                console.log("d3.selectAll()");
 //                                console.log(d3.selectAll("#lineChart"));
 //                                console.log((document.getElementsByClassName("lineChart")));
                                 document.getElementById("compare").innerHTML="";
@@ -1164,7 +1248,7 @@ path.area {
                             }
                             svg.selectAll("g.barChart").remove();
                             svg.selectAll("g.randar").remove();
-                            console.log(teamList);
+//                            console.log(teamList);
                             drawRandarChart(teamList,[0,900]);
                         });
 //                        .style("cursor", "pointer")
@@ -1206,6 +1290,7 @@ path.area {
     }
 
     function drawRandarChart(key_list,range) {
+        console.log(key_list);
         d3.csv("data.csv", function (data) {
             x.domain(data.map(function (d) {
                 return d.GAME_DATE;
@@ -1239,11 +1324,11 @@ path.area {
             //get team id here
 
             team_list = []
-            console.log(key_list.length);
+//            console.log(key_list.length);
             for (var j = 0; j < key_list.length; j++){
 
                 var team = key_list[j];
-                console.log(team)
+//                console.log(team)
                 //get team data
                 teamd = data2.filter(function (d) {
 
@@ -1276,10 +1361,10 @@ path.area {
                     r_data.push({axis: d_list[i], value: team_i / max_i})
 
                 }
-                console.log(i);
+//                console.log(i);
                 team_list.push(r_data)
             }
-            console.log(team_list)
+//            console.log(team_list)
 
 
 
@@ -1754,6 +1839,9 @@ path.area {
     }
 
 </script>
+<div>
+    <span id='calendar'></span>
+</div>
 <div>
     <span class="lineChart" id='compare'></span>
 </div>
