@@ -333,11 +333,19 @@ path.area {
 //                var teams = chart.Value();
 
                 google.visualization.events.addListener(chart, 'select', selectHandler);
+                google.visualization.events.addListener(chart, 'error', function (googleError) {
+                    google.visualization.errors.removeError(googleError.id);
+                });
                 console.log(chart);
 
                 function selectHandler() {
                     console.log(chart.getSelection());
                     var row = chart.getSelection()[0].row;
+                    if (row == undefined) {
+                        console.log(row == undefined)
+                        document.getElementById("team1").innerHTML="";
+                        document.getElementById("team2").innerHTML="";
+                    }
                     var game_id = datarow[row][3];
                     var game = data.filter(function(d){return d.GAME_ID == game_id});
                 console.log(game);
