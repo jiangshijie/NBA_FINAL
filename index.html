@@ -218,7 +218,10 @@ path.area {
                             console.log(idx);
                             var team1_detail = tmpdata1[idx];
                             var team2_detail = tmpdata2[idx];
-                            detail(team1_detail,team2_detail);})
+                            detail(team1_detail,team2_detail);
+                            moreinfo(team1_detail,team2_detail);
+                        })
+
                         .attr("id","circle1_"+i)
                         .attr("transform","translate(0,0)")
                         .attr("r", 6)
@@ -234,10 +237,12 @@ path.area {
                         .on("mouseover",function(){
                             var cur_id = d3.select(this).attr("id");
                             var idx = cur_id.split("_")[1]
-                            console.log(idx);
+                            //console.log(idx);
                             var team1_detail = tmpdata1[idx];
                             var team2_detail = tmpdata2[idx];
-                            detail(team1_detail,team2_detail);})
+                            detail(team1_detail,team2_detail);
+                            moreinfo(team1_detail,team2_detail);
+                        })
                         .attr("id","circle2_"+i)
                         .attr("transform","translate(0,0)")
                         .attr("r", 6)
@@ -357,6 +362,40 @@ path.area {
 
         });
     }
+    function moreinfo(team1_detail,team2_detail){
+        console.log(team1_detail);
+        moreinfo_draw(team1_detail,"moreinfo1");
+        moreinfo_draw(team2_detail,"moreinfo2");
+    }
+
+    function moreinfo_draw(game, selector){
+      console.log(game)
+      google.charts.load('current', {'packages':['corechart']});
+      google.charts.setOnLoadCallback(drawChart);
+      function drawChart() {
+
+        var data = google.visualization.arrayToDataTable([
+          ['Score Type', 'Score'],
+          ['Field Goal',game.FGM*2],
+          ['Three Point Field Goal',game.FG3M*3],
+          ['Free Throws',  game.FTM]
+        ]);
+
+        var options = {
+          title: game.TEAM_NAME+' Score Structure',
+          height : 400,
+          width : 600,
+          fontSize : 10,
+          titleTextStyle : {fontSize: 14, italic: true}
+        };
+
+        var chart = new google.visualization.PieChart(document.getElementById(selector));
+
+        chart.draw(data, options);
+      }
+    }
+
+
 
     function filter(data, team1, team2){
         var data1 = []
@@ -374,9 +413,9 @@ path.area {
         }
         return [data1,data2]
     }
-    function test(game){
-        console.log(game);
-    }
+    // function test(game){
+    //     //console.log(game);
+    // }
     function detail(team1_detail,team2_detail){
 
         detail_1(team1_detail);
@@ -384,7 +423,7 @@ path.area {
     }
 
     function detail_1(game){
-        console.log(game);
+        //console.log(game);
         var width = 500;
         var height = 450;
         var svg = d3.select("#team1")
@@ -724,7 +763,6 @@ path.area {
                 .transition()
                 .duration(delay)
                 .attr("opacity", 1)
-
     }
     function detail_2(game){
         var width = 500;
@@ -1298,7 +1336,7 @@ path.area {
     }
 
     function drawRandarChart(key_list,range) {
-        console.log(key_list);
+        //console.log(key_list);
         d3.csv("data.csv", function (data) {
             x.domain(data.map(function (d) {
                 return d.GAME_DATE;
@@ -1574,7 +1612,7 @@ path.area {
                         .on("click", function(d){
                             var t = d
 //                        console.log(d);
-                            console.log(this);
+                            //console.log(this);
                             d3.selectAll(".text_color").classed("text_color",false);
                             d3.select(this).classed("text_color",true);
 //                        this.transition().style("font-size","22px");
@@ -1857,6 +1895,10 @@ path.area {
     <span class="lineChart" id='team1'></span>
     <span class="lineChart" id='team2'></span>
 </div>    
+<div>
+    <span id='moreinfo1'></span>
+    <span id='moreinfo2'></span>
+</div>   
 
 </body>
 
