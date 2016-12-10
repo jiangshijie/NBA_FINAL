@@ -364,13 +364,16 @@ path.area {
     }
     function moreinfo(team1_detail,team2_detail){
         console.log(team1_detail);
+        google.charts.load('current', {'packages':['corechart','gauge']});
         moreinfo_draw(team1_detail,"moreinfo1");
         moreinfo_draw(team2_detail,"moreinfo2");
+        gauge_draw(team1_detail,"gauge1");
+        gauge_draw(team2_detail,"gauge2");
     }
 
     function moreinfo_draw(game, selector){
       console.log(game)
-      google.charts.load('current', {'packages':['corechart']});
+      // google.charts.load('current', {'packages':['corechart']});
       google.charts.setOnLoadCallback(drawChart);
       function drawChart() {
 
@@ -383,17 +386,43 @@ path.area {
 
         var options = {
           title: game.TEAM_NAME+' Score Structure',
-          height : 400,
-          width : 600,
-          fontSize : 10,
-          titleTextStyle : {fontSize: 14, italic: true}
+          height : 250,
+          width : 1000,
+          fontSize : 14,
+          titleTextStyle : {fontSize: 14, italic: true},
+          chartArea : {left:400,top:50,width:'100%',height:'100%'}
         };
 
         var chart = new google.visualization.PieChart(document.getElementById(selector));
+        chart.draw(data, options);
+
+
+        }
+    }
+    function gauge_draw(game, selector){
+        
+      google.charts.setOnLoadCallback(drawChart);
+      function drawChart() {
+        var ht2 = Math.round(100*game.FGM/game.FGA);
+        var ht3 = Math.round(100*game.FG3M/game.FG3A);
+        var ht1 = Math.round(100*game.FTM/game.FTA);
+        var data = google.visualization.arrayToDataTable([
+          ['Label', 'Value'],
+          ['FG Hit Rate', ht2],
+          ['FG3 Hit Rate', ht3],
+          ['FT Hit Rate', ht1]
+        ]);
+
+        var options = {
+          width: 500, height: 120,
+          minorTicks: 5
+        };
+
+        var chart = new google.visualization.Gauge(document.getElementById(selector));
 
         chart.draw(data, options);
-      }
     }
+  }
 
 
 
@@ -1896,8 +1925,10 @@ path.area {
     <span class="lineChart" id='team2'></span>
 </div>    
 <div>
-    <span id='moreinfo1'></span>
-    <span id='moreinfo2'></span>
+    <span id='moreinfo1' ></span>
+    <span id='gauge1' ></span>
+    <span id='moreinfo2' ></span>
+    <span id='gauge2' ></span>    
 </div>   
 
 </body>
