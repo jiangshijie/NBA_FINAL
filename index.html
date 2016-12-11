@@ -311,7 +311,9 @@ path.area {
                     date.map(toNumber);
 //                    console.log(new Date('20'+date[2],date[0],date[1]));
 //                    console.log(d.MATCHUP);
-                    datarow.push([new Date('20'+date[2],date[0],date[1]), d.PLUS_MINUS, d.MATCHUP, d.GAME_ID, d.GAME_DATE +"\n\t" +  team + ":" + d.PTS + "   VS   " + d.MATCHUP.slice(-3)+ ":" + (d.PTS - d.PLUS_MINUS)]);
+                    console.log('20'+date[2] + '-'+ date[0] +'-'+date[1]);
+                    console.log(d.GAME_DATE);
+                    datarow.push([new Date('20'+date[2],date[0] - 1,date[1]), d.PLUS_MINUS, d.MATCHUP, d.GAME_ID, d.GAME_DATE + "\n\t" +  team + ":" + d.PTS + "   VS   " + d.MATCHUP.slice(-3)+ ":" + (d.PTS - d.PLUS_MINUS)]);
                 }
 
 
