@@ -208,6 +208,53 @@ path.area {
                     .attr("transform", "translate(0,-25)")
                     .call(yInner);
 
+            svg.append("g")
+                    .append("circle")
+                    .attr("transform","translate(0,0)")
+                    .attr("r", 6)
+                    .attr("opacity", 0)
+                    .transition()
+                    .duration(1500)
+                    .attr("cx", function(){ return 950; })
+                    .attr("opacity", 0.8)
+                    .attr("cy", function(){ return 5;})
+                    .attr("fill","#DA70D6");   
+            svg.append("g")
+                    .append("text")
+                    .attr("transform","translate(0,0)")
+                    .attr("x",962)
+                    .attr("y",7)
+                    .text(tmpdata1[0].TEAM_ABBREVIATION)
+                    .style("font-size","14px")
+                    .transition()
+                    .duration(1500)                    
+                    .fill("black")
+
+
+
+            svg.append("g")
+                    .append("circle")
+                    .attr("transform","translate(0,0)")
+                    .attr("r", 6)
+                    .attr("opacity", 0)
+                    .transition()
+                    .duration(1500)
+                    .attr("cx", function(){ return 950; })
+                    .attr("opacity", 0.8)
+                    .attr("cy", function(){ return 20;})
+                    .attr("fill","#1E90FF");   
+
+            svg.append("g")
+                    .append("text")
+                    .attr("transform","translate(0,0)")
+                    .attr("x",962)
+                    .attr("y",22)
+                    .text(tmpdata2[0].TEAM_ABBREVIATION)
+                    .style("font-size","14px")
+                    .transition()
+                    .duration(1500)                    
+                    .fill("black")                    
+
             for(var i=0; i < tmpdata1.length; i++){
                 // console.log(team1_detail)
                 svg.append("g")
@@ -232,6 +279,7 @@ path.area {
                         .attr("opacity", 0.8)
                         .attr("cy", function(){ return y(tmpdata1[i].PTS);})
                         .attr("fill","#DA70D6");
+
                 svg.append("g")
                         .append("circle")
                         .on("mouseover",function(){
@@ -285,8 +333,26 @@ path.area {
     function calendarChart(team) {
 
         d3.csv('data.csv',function(d) {
-            d.PLUS_MINUS = + d.PLUS_MINUS;
+            d.MIN = +d.MIN;
+            d.DREB = +d.DREB;
+            d.TOV = +d.TOV;
+            d.REB = +d.REB;
+            d.STL = +d.STL;
+            d.BLK = +d.BLK;
+            d.AST = +d.AST;
             d.PTS = +d.PTS;
+            d.FGM = +d.FGM;
+            d.FGA = +d.FGA;
+            d.FG_PCT= +d.FG_PCT;
+            d.FG3M = +d.FG3M;
+            d.FG3A = +d.FG3A;
+            d.FG3_PCT = +d.FG3_PCT;
+            d.FT_PCT = +d.FT_PCT;
+            d.OREB = +d.OREB;
+            d.PF = +d.PF;
+            d.FTA = +d.FTA;
+            d.FTM = +d.FTM;            
+            d.PLUS_MINUS = + d.PLUS_MINUS;
             return d;
         },function(error, data) {
             if (error) throw error;
@@ -357,7 +423,7 @@ path.area {
 //                drawRandarChart(teams,[0,900]);
                   detail_1(game[0]);
                     detail_2(game[1]);
-                    moreinfo(game[1], game[0]);
+                    //moreinfo(game[0], game[1]);
                 }
             }
 
