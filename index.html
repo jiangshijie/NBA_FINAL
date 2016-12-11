@@ -265,6 +265,7 @@ path.area {
                             console.log(idx);
                             var team1_detail = tmpdata1[idx];
                             var team2_detail = tmpdata2[idx];
+                            drawscatter(team1_detail.GAME_ID);
                             detail(team1_detail,team2_detail);
                             moreinfo(team1_detail,team2_detail);
                         })
@@ -288,6 +289,7 @@ path.area {
                             //console.log(idx);
                             var team1_detail = tmpdata1[idx];
                             var team2_detail = tmpdata2[idx];
+                            drawscatter(team1_detail.GAME_ID);
                             detail(team1_detail,team2_detail);
                             moreinfo(team1_detail,team2_detail);
                         })
@@ -375,7 +377,9 @@ path.area {
                     date.map(toNumber);
 //                    console.log(new Date('20'+date[2],date[0],date[1]));
 //                    console.log(d.MATCHUP);
-                    datarow.push([new Date('20'+date[2],date[0],date[1]), d.PLUS_MINUS, d.MATCHUP, d.GAME_ID, d.GAME_DATE +"\n\t" +  team + ":" + d.PTS + "   VS   " + d.MATCHUP.slice(-3)+ ":" + (d.PTS - d.PLUS_MINUS)]);
+                    console.log('20'+date[2] + '-'+ date[0] +'-'+date[1]);
+                    console.log(d.GAME_DATE);
+                    datarow.push([new Date('20'+date[2],date[0] - 1,date[1]), d.PLUS_MINUS, d.MATCHUP, d.GAME_ID, d.GAME_DATE + "\n\t" +  team + ":" + d.PTS + "   VS   " + d.MATCHUP.slice(-3)+ ":" + (d.PTS - d.PLUS_MINUS)]);
                 }
 
 
@@ -420,10 +424,17 @@ path.area {
                     var game_id = datarow[row][3];
                     var game = data.filter(function(d){return d.GAME_ID == game_id});
                 console.log(game);
+                drawscatter(game_id);
 //                drawRandarChart(teams,[0,900]);
+<<<<<<< HEAD
                   detail_1(game[0]);
                     detail_2(game[1]);
                     //moreinfo(game[0], game[1]);
+=======
+//                  detail_1(game[0]);
+//                    detail_2(game[1]);
+//                    moreinfo(game[1], game[0]);
+>>>>>>> 9bd0e85cf95ca07c1be64521acb4514deb840fe2
                 }
             }
 
@@ -1549,8 +1560,8 @@ path.area {
                     opacityCircles: 0.1, 	//The opacity of the circles of each blob
                     strokeWidth: 2, 		//The width of the stroke around each blob
                     roundStrokes: false,	//If true the area and stroke will follow a round path (cardinal-closed)
-                    color: d3.scale.category10()	//Color function
                 };
+                var cfgcolor = ['#DA70D6', '#1E90FF'];
 
                 //Put all of the options into a variable called cfg
                 if ('undefined' !== typeof options) {
@@ -1791,7 +1802,11 @@ path.area {
                             return radarLine(d);
                         })
                         .style("fill", function (d, i) {
-                            return cfg.color(i);
+                            console.log("iisha");
+                            console.log(i);
+                            console.log(color(i));
+                            console.log(cfg.color);
+                            return cfgcolor[i];
                         })
                         .style("fill-opacity", cfg.opacityArea)
                         .on('mouseover', function (d, i) {
@@ -1819,7 +1834,7 @@ path.area {
                         })
                         .style("stroke-width", cfg.strokeWidth + "px")
                         .style("stroke", function (d, i) {
-                            return cfg.color(i);
+                            return cfgcolor[i];
                         })
                         .style("fill", "none")
                         .style("filter", "url(#glow)");
@@ -1839,7 +1854,7 @@ path.area {
                             return rScale(d.value) * Math.sin(angleSlice * i - Math.PI / 2);
                         })
                         .style("fill", function (d, i, j) {
-                            return cfg.color(j);
+                            return cfgcolor[j];
                         })
                         .style("fill-opacity", 0.8);
 
@@ -1857,7 +1872,7 @@ path.area {
                     })
                     .style("fill", function (d, i) {
 //                        console.log(cfg.color)
-                        return cfg.color(i);
+                        return cfgcolor[i];
                     })
                     .style("fill-opacity", cfg.opacityArea)
                     .on('mouseover', function (d, i) {
@@ -1980,6 +1995,44 @@ path.area {
         })
     }
 
+function drawscatter(gameid){
+
+	d3.csv("data2.csv", function (data_player) 
+{
+var game = data_player.filter(function(d){return (d.GAME_ID == gameid)})
+            console.log(game);
+            //var cols =[['MIN','PTS','NAME','TEAM']]
+            //var score_time = game.map(function(d){return [parseFloat(d.MIN),parseFloat(d.PTS),d.PLAYER_NAME,d.TEAM_ABBREVIATION]})
+
+            var cols =[['NAME','MIN','PTS','TEAM','PTS/MIN']]
+            var score_time = game.map(function(d){var name = d.PLAYER_NAME.split(" ");
+                return [name[1],parseFloat(d.MIN),parseFloat(d.PTS),d.TEAM_ABBREVIATION,Math.sqrt(parseFloat(d.PTS)/parseFloat(d.MIN))]})
+
+            var data3 = cols.concat(score_time)
+            console.log(data3);
+      
+        google.charts.load('current', {'packages':['corechart']});
+      google.charts.setOnLoadCallback(drawSeriesChart);
+
+    function drawSeriesChart() {
+
+      var data = google.visualization.arrayToDataTable(data3);
+
+      var options = {
+        title: 'SCORES VS. TIME IN GAME',
+        hAxis: {title: 'TIME IN GAME'},
+        vAxis: {title: 'SCORES'},
+        bubble: {textStyle: {fontSize: 10}},
+        colors: ['#DA70D6', '#1E90FF']
+        //,sizeAxis: {minValue: 1,  maxSize: 16}
+      };
+
+      var chart = new google.visualization.BubbleChart(document.getElementById('series_chart_div'));
+      chart.draw(data, options);
+    }
+})//end of read data2.csv
+
+}
 </script>
 <div>
     <span id='calendar'></span>
@@ -1997,7 +2050,7 @@ path.area {
     <span id='moreinfo2' ></span>
     <span id='gauge2' ></span>    
 </div>   
-
+<div id="series_chart_div" style="width: 1000px; height: 600px;"></div>
 </body>
 
 </html>
