@@ -360,9 +360,9 @@ path.area {
                 console.log(game);
                 drawscatter(game_id);
 //                drawRandarChart(teams,[0,900]);
-                  detail_1(game[0]);
-                    detail_2(game[1]);
-                    moreinfo(game[1], game[0]);
+//                  detail_1(game[0]);
+//                    detail_2(game[1]);
+//                    moreinfo(game[1], game[0]);
                 }
             }
 
@@ -1488,8 +1488,8 @@ path.area {
                     opacityCircles: 0.1, 	//The opacity of the circles of each blob
                     strokeWidth: 2, 		//The width of the stroke around each blob
                     roundStrokes: false,	//If true the area and stroke will follow a round path (cardinal-closed)
-                    color: d3.scale.category10()	//Color function
                 };
+                var cfgcolor = ['#DA70D6', '#1E90FF'];
 
                 //Put all of the options into a variable called cfg
                 if ('undefined' !== typeof options) {
@@ -1730,7 +1730,11 @@ path.area {
                             return radarLine(d);
                         })
                         .style("fill", function (d, i) {
-                            return cfg.color(i);
+                            console.log("iisha");
+                            console.log(i);
+                            console.log(color(i));
+                            console.log(cfg.color);
+                            return cfgcolor[i];
                         })
                         .style("fill-opacity", cfg.opacityArea)
                         .on('mouseover', function (d, i) {
@@ -1758,7 +1762,7 @@ path.area {
                         })
                         .style("stroke-width", cfg.strokeWidth + "px")
                         .style("stroke", function (d, i) {
-                            return cfg.color(i);
+                            return cfgcolor[i];
                         })
                         .style("fill", "none")
                         .style("filter", "url(#glow)");
@@ -1778,7 +1782,7 @@ path.area {
                             return rScale(d.value) * Math.sin(angleSlice * i - Math.PI / 2);
                         })
                         .style("fill", function (d, i, j) {
-                            return cfg.color(j);
+                            return cfgcolor[j];
                         })
                         .style("fill-opacity", 0.8);
 
@@ -1796,7 +1800,7 @@ path.area {
                     })
                     .style("fill", function (d, i) {
 //                        console.log(cfg.color)
-                        return cfg.color(i);
+                        return cfgcolor[i];
                     })
                     .style("fill-opacity", cfg.opacityArea)
                     .on('mouseover', function (d, i) {
