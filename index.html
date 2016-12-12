@@ -709,6 +709,7 @@ path.area {
         google.charts.load('current', {'packages':['corechart','gauge']});
         moreinfo_draw(team1_detail,"moreinfo1");
         moreinfo_draw(team2_detail,"moreinfo2");
+        clear_gauge();
         gauge_text();
         gauge_draw(team1_detail,"gauge1","#DA70D6",2);
         gauge_draw(team1_detail,"gauge2","#DA70D6",3);
@@ -717,6 +718,17 @@ path.area {
         gauge_draw(team2_detail,"gauge5","#1E90FF",3);
         gauge_draw(team2_detail,"gauge6","#1E90FF",1);        
     }
+    function clear_gauge(){
+        document.getElementById("gaugetext").innerHTML="";
+        document.getElementById("gauge1").innerHTML="";
+        document.getElementById("gauge2").innerHTML="";
+        document.getElementById("gauge3").innerHTML="";
+        document.getElementById("gauge4").innerHTML="";
+        document.getElementById("gauge5").innerHTML="";
+        document.getElementById("gauge6").innerHTML="";
+    }
+
+
 
     function moreinfo_draw(game, selector){
 //      console.log(game)
