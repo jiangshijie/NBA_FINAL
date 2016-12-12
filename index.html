@@ -1663,6 +1663,7 @@ path.area {
                             }
                             svg.selectAll("g.barChart").remove();
                             svg.selectAll("g.randar").remove();
+                            d3.selectAll("svg.scatter").remove();
 //                            console.log(teamList);
                             drawRandarChart(teamList,[0,900]);
                         });
