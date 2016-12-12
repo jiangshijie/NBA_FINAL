@@ -24,9 +24,15 @@
           width: 200px;
           height: 28px;
           pointer-events: none;
-        }       
+        }
 
+        .bar--positive {
+            fill: #DA70D6;
+        }
 
+        .bar--negative {
+            fill: #1E90FF;
+        }
 
         div.google-visualization-tooltip {
             font-size:  15px !important;
@@ -317,7 +323,7 @@ path.area {
                         .on("mouseover",function(){
                             var cur_id = d3.select(this).attr("id");
                             var idx = cur_id.split("_")[1]
-                            console.log(idx);
+//                            console.log(idx);
                             var team1_detail = tmpdata1[idx];
                             var team2_detail = tmpdata2[idx];
                             drawscatter(team1_detail.GAME_ID);
@@ -345,6 +351,7 @@ path.area {
                             var team1_detail = tmpdata1[idx];
                             var team2_detail = tmpdata2[idx];
                             drawscatter(team1_detail.GAME_ID);
+//                            negativeBarChart(team1_detail, team2_detail);
                             detail(team1_detail,team2_detail);
                             moreinfo(team1_detail,team2_detail);
                         })
@@ -385,11 +392,83 @@ path.area {
             }
         })
     }
+    function negativeBarChart(team1, team2) {
+        document.getElementById("teambar").innerHTML="";
+        console.log(document.getElementById("teambar"));
+//        console.log(team2);
+        var data = [];
+        data.push({ name : "Assists", value:(team1.AST-team2.AST)/(team1.AST+team2.AST)});
+        data.push({ name : "Blocks", value:(team1.BLK-team2.BLK)/(team1.BLK+team2.BLK)});
+        data.push({ name : "Defensive Rebounds", value:(team1.DREB-team2.DREB)/(team1.DREB+team2.DREB)});
+        data.push({ name : "Three Point Field Goal Percentage", value:(team1.FG3_PCT-team2.FG3_PCT)});
+        data.push({ name : "Field Goal Percentage", value:(team1.FG_PCT-team2.FG_PCT)});
+        data.push({ name : "Free Throw Percentage", value:(team1.FT_PCT-team2.FT_PCT)});
+        data.push({ name : "Rebounds", value:(team1.REB-team2.REB)/(team1.REB+team2.REB)});
+        data.push({ name : "Offensive Rebounds", value:(team1.OREB-team2.OREB)/(team1.OREB+team2.OREB)});
+        data.push({ name : "Steal", value:(team1.STL-team2.STL)/(team1.STL+team2.STL)});
+        data.push({ name : "Turnover", value:(team1.TOV-team2.TOV)/(team1.TOV+team2.TOV)});
+//        console.log(data);
+
+        var margin = {top: 20, right: 30, bottom: 40, left: 30},
+                width = 960 - margin.left - margin.right,
+                height = 300 - margin.top - margin.bottom;
+
+        var x = d3.scale.linear()
+                .range([0, width]);
+
+        var y = d3.scale.ordinal()
+                .rangeRoundBands([0, height], 0.1);
+
+        var xAxis = d3.svg.axis()
+                .scale(x)
+                .orient("bottom");
+
+        var yAxis = d3.svg.axis()
+                .scale(y)
+                .orient("left")
+                .tickSize(0)
+                .tickPadding(6);
+
+
+        var svg = d3.select("#teambar").append("svg")
+                .attr("width", width + margin.left + margin.right)
+                .attr("height", height + margin.top + margin.bottom)
+                .append("g")
+                .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+            data.sort(function(a,b){return b.value - a.value});
+        console.log(data);
+
+            x.domain(d3.extent(data, function(d) { return d.value; })).nice();
+            y.domain(data.map(function(d) { return d.name; }));
+
+            svg.selectAll(".bar")
+                    .data(data)
+                    .enter().append("rect")
+                    .attr("class", function(d) { return "bar bar--" + (d.value < 0 ? "negative" : "positive"); })
+                    .attr("x", function(d) { return x(Math.min(0, d.value)); })
+                    .attr("y", function(d) { return y(d.name); })
+                    .attr("width", function(d) { return Math.abs(x(d.value) - x(0)); })
+                    .attr("height", y.rangeBand());
+
+            svg.append("g")
+                    .attr("class", "x axis")
+                    .attr("transform", "translate(0," + height + ")")
+                    .call(xAxis);
+
+            svg.append("g")
+                    .attr("class", "y axis")
+                    .attr("transform", "translate(" + x(0) + ",0)")
+                    .call(yAxis);
+            svg.append("g")
+                    .append("circle")
+                    .attr("fill","")
+
+    }
 
     //calendarChart();
     function calendarChart(team) {
 
-        var title="Calendar of Winning";
+        var title="Calendar of Game";
         var breaks=[-30,-10,0,10, 30];
         var colours=["#de2d26","#fc9272","#fee0d2","#e5f5e0","#a1d99b", "#31a354"];
         var content = ["heavily lose", "common lose", "slightly lose", "slight win", "common win", "heavily win"]
@@ -440,7 +519,7 @@ path.area {
                     .attr("x",xOffset)
                     .attr("y",20)
                     .text(title);
-            console.log(yearlyData);
+//            console.log(yearlyData);
             //create an SVG group for each year
             var cals = svg.selectAll("g")
                     .data(yearlyData)
@@ -510,7 +589,7 @@ path.area {
                     .attr("y", function(d) { return calY+(d.GAME_DATE.getDay() * cellSize); })
                     .attr("fill", function(d) {
                         if (d.PLUS_MINUS<breaks[0]) {
-                            console.log(colours[0]);
+//                            console.log(colours[0]);
                             return colours[0];
                         }
                         for (i=1;i<breaks.length;i++){
@@ -622,7 +701,7 @@ path.area {
         }
     }
     function moreinfo(team1_detail,team2_detail){
-        console.log(team1_detail);
+//        console.log(team1_detail);
         google.charts.load('current', {'packages':['corechart','gauge']});
         moreinfo_draw(team1_detail,"moreinfo1");
         moreinfo_draw(team2_detail,"moreinfo2");
@@ -631,7 +710,7 @@ path.area {
     }
 
     function moreinfo_draw(game, selector){
-      console.log(game)
+//      console.log(game)
       // google.charts.load('current', {'packages':['corechart']});
       google.charts.setOnLoadCallback(drawChart);
       function drawChart() {
@@ -705,7 +784,7 @@ path.area {
     //     //console.log(game);
     // }
     function detail(team1_detail,team2_detail){
-
+        negativeBarChart(team1_detail, team2_detail);
         detail_1(team1_detail);
         detail_2(team2_detail);
     }
@@ -1571,12 +1650,14 @@ path.area {
                                 compare(teamList);
                                 document.getElementById("team1").innerHTML="";
                                 document.getElementById("team2").innerHTML="";
+                                document.getElementById("teambar").innerHTML="";
                                 document.getElementById("calendar").innerHTML="";
                             } else {
 //                                console.log("d3.selectAll()");
 //                                console.log(d3.selectAll("#lineChart"));
 //                                console.log((document.getElementsByClassName("lineChart")));
                                 document.getElementById("compare").innerHTML="";
+                                document.getElementById("teambar").innerHTML="";
                                 document.getElementById("team1").innerHTML="";
                                 document.getElementById("team2").innerHTML="";
                             }
@@ -1983,10 +2064,10 @@ path.area {
                             return radarLine(d);
                         })
                         .style("fill", function (d, i) {
-                            console.log("iisha");
-                            console.log(i);
-                            console.log(color(i));
-                            console.log(cfg.color);
+//                            console.log("iisha");
+//                            console.log(i);
+//                            console.log(color(i));
+//                            console.log(cfg.color);
                             return cfgcolor[i];
                         })
                         .style("fill-opacity", cfg.opacityArea)
@@ -2282,7 +2363,7 @@ var tooltip = d3.select("body").append("div")
       });
 
   // draw legend
-  console.log(color)
+//  console.log(color)
   var legend = svg.selectAll(".legend")
       .data(color.domain())
     .enter().append("g")
@@ -2311,11 +2392,12 @@ var tooltip = d3.select("body").append("div")
     <span id='calendar'></span>
 </div>
 <div>
-    <span class="lineChart" id='compare'></span>
+    <span id='compare'></span>
 </div>
 <div>
-    <span class="lineChart" id='team1'></span>
-    <span class="lineChart" id='team2'></span>
+    <span id='teambar'></span>
+    <span id='team1'></span>
+    <span id='team2'></span>
 </div>    
 <div>
     <span id='moreinfo1' ></span>
