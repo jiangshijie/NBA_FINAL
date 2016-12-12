@@ -8,6 +8,13 @@
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <style>
 
+<<<<<<< Updated upstream
+=======
+<<<<<<< HEAD
+
+=======
+>>>>>>> origin/master
+>>>>>>> Stashed changes
         .axis2 path,
         .axis2 line {
           fill: none;
@@ -34,6 +41,7 @@
 
 
         }
+
         .text_color {
             fill:red;
         }
@@ -126,6 +134,39 @@ path.area {
   fill: none;
   stroke: #000;
 }
+
+        .month {
+            fill: none;
+            stroke: #000;
+            stroke-width: 2px;
+        }
+        .day {
+            fill: #fff;
+            stroke: #ccc;
+        }
+        /*text    {*/
+            /*font-family:sans-serif;*/
+            /*font-size:1.5em;*/
+        /*}*/
+        .dayLabel   {
+            fill:#aaa;
+            font-size:0.8em;
+        }
+        .monthLabel {
+            text-anchor:middle;
+            font-size:0.8em;
+            fill:#aaa;
+        }
+        .yearLabel  {
+            fill:#aaa;
+            font-size:1.2em;
+        }
+
+        .key    {font-size:0.5em;}
+        .selected {
+            fill:"blue";
+        }
+
 
     </style>
 </head>
@@ -355,102 +396,237 @@ path.area {
     //calendarChart();
     function calendarChart(team) {
 
-        d3.csv('data.csv',function(d) {
-            d.MIN = +d.MIN;
-            d.DREB = +d.DREB;
-            d.TOV = +d.TOV;
-            d.REB = +d.REB;
-            d.STL = +d.STL;
-            d.BLK = +d.BLK;
-            d.AST = +d.AST;
-            d.PTS = +d.PTS;
-            d.FGM = +d.FGM;
-            d.FGA = +d.FGA;
-            d.FG_PCT= +d.FG_PCT;
-            d.FG3M = +d.FG3M;
-            d.FG3A = +d.FG3A;
-            d.FG3_PCT = +d.FG3_PCT;
-            d.FT_PCT = +d.FT_PCT;
-            d.OREB = +d.OREB;
-            d.PF = +d.PF;
-            d.FTA = +d.FTA;
-            d.FTM = +d.FTM;            
-            d.PLUS_MINUS = + d.PLUS_MINUS;
-            return d;
-        },function(error, data) {
-            if (error) throw error;
-            var datarow=[];
-            var min= 1000;
-            var max = -1000;
-            var teams;
-            data.forEach(function(d){
-                if (d.TEAM_ABBREVIATION == team) {
-                    var date = d.GAME_DATE.split('/');
-                    function toNumber(d){
-                        return +d;
-                    }
-                    if (min > d.PLUS_MINUS) {
-                        min = d.PLUS_MINUS;
-                    }
-                    if (max < d.PLUS_MINUS) {
-                        max = d.PLUS_MINUS;
-                    }
-                    date.map(toNumber);
-//                    console.log(new Date('20'+date[2],date[0],date[1]));
-//                    console.log(d.MATCHUP);
-                    console.log('20'+date[2] + '-'+ date[0] +'-'+date[1]);
-                    console.log(d.GAME_DATE);
-                    datarow.push([new Date('20'+date[2],date[0] - 1,date[1]), d.PLUS_MINUS, d.MATCHUP, d.GAME_ID, d.GAME_DATE + "\n\t" +  team + ":" + d.PTS + "   VS   " + d.MATCHUP.slice(-3)+ ":" + (d.PTS - d.PLUS_MINUS)]);
-                }
+        var title="Calendar of Winning";
+        var breaks=[-30,-10,0,10, 30];
+        var colours=["#de2d26","#fc9272","#fee0d2","#e5f5e0","#a1d99b", "#31a354"];
+        var content = ["heavily lose", "common lose", "slightly lose", "slight win", "common win", "heavily win"]
 
+        //general layout information
+        var cellSize = 10;
+        var xOffset=20;
+        var yOffset=60;
+        var calY=50;//offset of calendar in each group
+        var calX=25;
+        var width = 960;
+        var height = 100;
+        var parseDate = d3.time.format("%m/%d/%y").parse;
+        format = d3.time.format("%d-%m-%Y");
+        toolDate = d3.time.format("%m/%d/%y");
+        var teamname = 'GSW';
+        d3.csv("data.csv", function(error, data) {
+
+            //set up an array of all the dates in the data which we need to work out the range of the data
+            var dates = new Array();
+            var values = new Array();
+            //parse the data
+            data.forEach(function(d)    {
+                if (d.TEAM_ABBREVIATION === teamname) {
+//                console.log(d.GAME_DATE);
+//                console.log(parseDate(d.GAME_DATE));
+                    dates.push(parseDate(d.GAME_DATE));
+                    values.push(d.PLUS_MINUS);
+                    d.GAME_DATE=parseDate(d.GAME_DATE);
+                    d.PLUS_MINUS= +d.PLUS_MINUS;
+
+                    d.year=d.GAME_DATE.getFullYear();//extract the year from the data
+                }
 
             });
-            google.charts.load("current", {packages:["calendar"]});
-            google.charts.setOnLoadCallback(drawChart);
-            function drawChart(){
-                var dataTable = new google.visualization.DataTable();
-                dataTable.addColumn({ type: 'date', id: 'Date' });
-                dataTable.addColumn({ type: 'number', id: 'Won/Loss' });
-                dataTable.addColumn({type: 'string', role: 'tooltip'});
-                dataTable.addColumn({type: 'string', role: 'tooltip'});
-                dataTable.addColumn({type: 'string', role: 'tooltip'})
-                dataTable.addRows(datarow);
-                var chart = new google.visualization.Calendar(document.getElementById('calendar'));
 
-                var options = {
-                    title: "Compitition Game",
-                    height: 350,
-                    width:1000,
-                    colorAxis:{minValue: min, maxValue:max},
-                    tooltip: { isHtml: true }
-                };
+            var yearlyData = d3.nest()
+                    .key(function(d){return d.year;})
+                    .entries(data);
+            yearlyData.splice(-1);
 
-                chart.draw(dataTable, options);
-//                var teams = chart.Value();
+            var svg = d3.select("#compare").append("svg")
+                    .attr("width","90%")
+                    .attr("viewBox","0 0 "+(xOffset+width)+" 540")
 
-                google.visualization.events.addListener(chart, 'select', selectHandler);
-                google.visualization.events.addListener(chart, 'error', function (googleError) {
-                    google.visualization.errors.removeError(googleError.id);
-                });
-                console.log(chart);
+            //title
+            svg.append("text")
+                    .attr("x",xOffset)
+                    .attr("y",20)
+                    .text(title);
+            console.log(yearlyData);
+            //create an SVG group for each year
+            var cals = svg.selectAll("g")
+                    .data(yearlyData)
+                    .enter()
+                    .append("g")
+                    .attr("id",function(d){
+                        return d.key;
+                    })
+                    .attr("transform",function(d,i){
+                        return "translate(0,"+(yOffset+(i*(height+calY)))+")";
+                    })
 
-                function selectHandler() {
-                    console.log(chart.getSelection());
-                    var row = chart.getSelection()[0].row;
-                    if (row == undefined) {
-                        console.log(row == undefined)
-                        document.getElementById("team1").innerHTML="";
-                        document.getElementById("team2").innerHTML="";
-                    }
-                    var game_id = datarow[row][3];
-                    var game = data.filter(function(d){return d.GAME_ID == game_id});
-                console.log(game);
-                drawscatter(game_id);
-//                drawRandarChart(teams,[0,900]);
-                }
+            var labels = cals.append("text")
+                    .attr("class","yearLabel")
+                    .attr("x",xOffset)
+                    .attr("y",15)
+                    .text(function(d){return d.key});
+
+            //create a daily rectangle for each year
+            var rects = cals.append("g")
+                    .attr("id","alldays")
+                    .selectAll(".day")
+                    .data(function(d) { return d3.time.days(new Date(parseInt(d.key), 0, 1), new Date(parseInt(d.key) + 1, 0, 1)); })
+                    .enter().append("rect")
+                    .attr("id",function(d) {
+                        return "_"+format(d);
+                        //return toolDate(d.date)+":\n"+d.value+" dead or missing";
+                    })
+                    .attr("class", "day")
+                    .attr("width", cellSize)
+                    .attr("height", cellSize)
+                    .attr("x", function(d) {
+                        return xOffset+calX+(d3.time.weekOfYear(d) * cellSize);
+                    })
+                    .attr("y", function(d) { return calY+(d.getDay() * cellSize); })
+                    .datum(format);
+
+            //create day labels
+            var days = ['Su','Mo','Tu','We','Th','Fr','Sa'];
+            var dayLabels=cals.append("g").attr("id","dayLabels")
+            days.forEach(function(d,i)    {
+                dayLabels.append("text")
+                        .attr("class","dayLabel")
+                        .attr("x",xOffset)
+                        .attr("y",function(d) { return calY+(i * cellSize); })
+                        .attr("dy","0.9em")
+                        .text(d);
+            })
+
+            //let's draw the data on
+            var dataRects = cals.append("g")
+                    .attr("id","dataDays")
+                    .selectAll(".dataday")
+                    .data(function(d){
+                        return d.values;
+                    })
+                    .enter()
+                    .append("rect")
+                    .attr("id",function(d) {
+//                    console.log(d);
+                        return format(d.GAME_DATE)+":"+d.PLUS_MINUS;
+                    })
+                    .attr("stroke","#ccc")
+                    .attr("width",cellSize)
+                    .attr("height",cellSize)
+                    .attr("x", function(d){return xOffset+calX+(d3.time.weekOfYear(d.GAME_DATE) * cellSize);})
+                    .attr("y", function(d) { return calY+(d.GAME_DATE.getDay() * cellSize); })
+                    .attr("fill", function(d) {
+                        if (d.PLUS_MINUS<breaks[0]) {
+                            console.log(colours[0]);
+                            return colours[0];
+                        }
+                        for (i=1;i<breaks.length;i++){
+                            if (d.PLUS_MINUS>=breaks[i - 1]&&d.PLUS_MINUS<breaks[i]){
+                                return colours[i];
+                            }
+                        }
+                        if (d.PLUS_MINUS>=breaks[breaks.length-1]){
+                            return colours[breaks.length];
+                        }
+                    })
+                    .on('click', function(d){
+                        this.setAttribute("class", "selected");
+                        drawscatter(d.GAME_ID);
+                    })
+
+            //append a title element to give basic mouseover info
+            dataRects.append("title")
+                    .text(function(d) { return toolDate(d.GAME_DATE)+":\n"+teamname + ":" + d.PTS + " VS " + d.MATCHUP.slice(-3) +":" + (d.PTS - d.PLUS_MINUS); });
+
+            //add montly outlines for calendar
+            cals.append("g")
+                    .attr("id","monthOutlines")
+                    .selectAll(".month")
+                    .data(function(d) {
+                        return d3.time.months(new Date(parseInt(d.key), 0, 1),
+                                new Date(parseInt(d.key) + 1, 0, 1));
+                    })
+                    .enter().append("path")
+                    .attr("class", "month")
+                    .attr("transform","translate("+(xOffset+calX)+","+calY+")")
+                    .attr("d", monthPath);
+
+            //retreive the bounding boxes of the outlines
+            var BB = new Array();
+            var mp = document.getElementById("monthOutlines").childNodes;
+            for (var i=0;i<mp.length;i++){
+                BB.push(mp[i].getBBox());
             }
 
-        });
+            var monthX = new Array();
+            BB.forEach(function(d,i){
+                boxCentre = d.width/2;
+                monthX.push(xOffset+calX+d.x+boxCentre);
+            })
+
+            //create centred month labels around the bounding box of each month path
+            //create day labels
+            var months = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
+            var monthLabels=cals.append("g").attr("id","monthLabels")
+            months.forEach(function(d,i)    {
+                monthLabels.append("text")
+                        .attr("class","monthLabel")
+                        .attr("x",monthX[i])
+                        .attr("y",calY/1.2)
+                        .text(d);
+            })
+
+            //create key
+            var key = svg.append("g")
+                    .attr("id","key")
+                    .attr("class","key")
+                    .attr("transform",function(d){
+                        return "translate("+xOffset+","+(yOffset-(cellSize*1.5))+")";
+                    });
+
+            key.selectAll("rect")
+                    .data(colours)
+                    .enter()
+                    .append("rect")
+                    .attr("width",cellSize)
+                    .attr("height",cellSize)
+                    .attr("x",function(d,i){
+                        return i*130;
+                    })
+                    .attr("fill",function(d){
+                        return d;
+                    });
+
+            key.selectAll("text")
+                    .data(colours)
+                    .enter()
+                    .append("text")
+                    .attr("x",function(d,i){
+                        return cellSize+5+(i*130);
+                    })
+                    .attr("y","1em")
+                    .text(function(d,i){
+                        return content[i];
+//                    if (i<colours.length-1){
+//                        return content[i];
+//                    }   else    {
+//                        return "over "+breaks[i-1];
+//                    }
+                    });
+
+        });//end data load
+
+        //pure Bostock - compute and return monthly path data for any year
+        function monthPath(t0) {
+            var t1 = new Date(t0.getFullYear(), t0.getMonth() + 1, 0),
+                    d0 = t0.getDay(), w0 = d3.time.weekOfYear(t0),
+                    d1 = t1.getDay(), w1 = d3.time.weekOfYear(t1);
+            return "M" + (w0 + 1) * cellSize + "," + d0 * cellSize
+                    + "H" + w0 * cellSize + "V" + 7 * cellSize
+                    + "H" + w1 * cellSize + "V" + (d1 + 1) * cellSize
+                    + "H" + (w1 + 1) * cellSize + "V" + 0
+                    + "H" + (w0 + 1) * cellSize + "Z";
+        }
     }
     function moreinfo(team1_detail,team2_detail){
         console.log(team1_detail);
