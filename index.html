@@ -1569,7 +1569,7 @@ path.area {
     var team;
     var margin = {left:30, right : 30, top:300, bottom: 0};
     var width = 1100 + margin.left + margin.right,
-            height = 100 + margin.top + margin.bottom;
+            height = 150 + margin.top + margin.bottom;
 
 
     //Define map projection
@@ -1731,7 +1731,10 @@ path.area {
                                 document.getElementById("calendar").innerHTML="";
                             }
                             if (teamList.length == 1) {
+                                clear_gauge();
                                 calendarChart(teamList[0]);
+                                document.getElementById("moreinfo1").innerHTML="";
+                                document.getElementById("moreinfo2").innerHTML="";
                             }
                             if (teamList.length == 2) {
                                 compare(teamList);
