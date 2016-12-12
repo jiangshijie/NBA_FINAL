@@ -475,7 +475,7 @@ path.area {
         var title="Calendar of Game";
         var breaks=[-30,-10,0,10, 30];
         var colours=["#de2d26","#fc9272","#fee0d2","#e5f5e0","#a1d99b", "#31a354"];
-        var content = ["heavily lose", "common lose", "slightly lose", "slight win", "common win", "heavily win"]
+        var content = ["heavily lose", "common lose", "slightly lose", "slightly win", "common win", "heavily win"]
 
         //general layout information
         var cellSize = 15;
@@ -1649,8 +1649,6 @@ path.area {
 
                 //Map the rank to opacity[0.3, 0.9]
                 Opacity.domain([0, d3.max(data, function(d) { return d.winrate; })]);
-
-
                 //Create nodes group
                 var nodes = g.selectAll("nodes")
                         .data(data)
@@ -1665,7 +1663,7 @@ path.area {
                 //Circles for teams
                 nodes.append("circle")
                         .attr("class", "AllCircle")
-                        .attr("r", 8)
+                        .attr("r", function(d){return d.winrate/10;})
                         .style("fill", function(d){
                             if (d.EASTorWEST == "East") {
                                 return "blue";
