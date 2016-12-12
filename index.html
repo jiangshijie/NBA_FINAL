@@ -413,7 +413,7 @@ path.area {
         data.push({ name : "Turnover", value:(team1.TOV-team2.TOV)/(team1.TOV+team2.TOV)});
 //        console.log(data);
 
-        var margin = {top: 20, right: 30, bottom: 40, left: 30},
+        var margin = {top: 20, right: 30, bottom: 40, left: 280},
                 width = 960 - margin.left - margin.right,
                 height = 300 - margin.top - margin.bottom;
 
@@ -442,7 +442,7 @@ path.area {
             data.sort(function(a,b){return b.value - a.value});
         console.log(data);
 
-            x.domain(d3.extent(data, function(d) { return d.value; })).nice();
+            x.domain([-1, 1]).nice();
             y.domain(data.map(function(d) { return d.name; }));
 
             svg.selectAll(".bar")
@@ -484,7 +484,7 @@ path.area {
         var calY=50;//offset of calendar in each group
         var calX=25;
         var width = 960;
-        var height = 100;
+        var height = 150;
         var parseDate = d3.time.format("%m/%d/%y").parse;
         format = d3.time.format("%d-%m-%Y");
         toolDate = d3.time.format("%m/%d/%y");
@@ -606,7 +606,6 @@ path.area {
                         }
                     })
                     .on('click', function(d){
-                        this.setAttribute("class", "selected");
                         drawscatter(d.GAME_ID);
                     })
 
