@@ -1663,7 +1663,7 @@ path.area {
                 //Circles for teams
                 nodes.append("circle")
                         .attr("class", "AllCircle")
-                        .attr("r", function(d){return d.winrate/10;})
+                        .attr("r", function(d){return d.winrate/10 +3;})
                         .style("fill", function(d){
                             if (d.EASTorWEST == "East") {
                                 return "blue";
@@ -2367,7 +2367,7 @@ var cValue = function(d) { return d.TEAM_NAME;},
 // add the graph canvas to the body of the webpage
 d3.selectAll("svg.scatter").remove();
 
-var svg = d3.select("body").append("svg")
+var svg = d3.select("#scatter").append("svg")
     .attr("class","scatter")
     .attr("width", width2 + margin2.left + margin2.right)
     .attr("height", height2 + margin2.top + margin2.bottom)
@@ -2468,7 +2468,9 @@ var tooltip = d3.select("body").append("div")
 <div>
     <span id='calendar'></span>
 </div>
+
 <div>
+    <span id='scatter'></span>
     <span id='compare'></span>
 </div>
 <div>
