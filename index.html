@@ -6,6 +6,7 @@
     <script src="//d3js.org/d3.v3.min.js"></script>
     <script src="http://d3js.org/topojson.v1.min.js"></script>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script src="liquidFillGauge.js" language="JavaScript"></script>
     <style>
 
         .axis2 path,
@@ -165,7 +166,10 @@ path.area {
         .selected {
             fill:"blue";
         }
-
+        .liquidFillGaugeText { 
+            font-family: Helvetica; 
+            font-weight: bold; 
+        }
 
     </style>
 </head>
@@ -705,8 +709,13 @@ path.area {
         google.charts.load('current', {'packages':['corechart','gauge']});
         moreinfo_draw(team1_detail,"moreinfo1");
         moreinfo_draw(team2_detail,"moreinfo2");
-        gauge_draw(team1_detail,"gauge1");
-        gauge_draw(team2_detail,"gauge2");
+        gauge_text();
+        gauge_draw(team1_detail,"gauge1","#DA70D6",2);
+        gauge_draw(team1_detail,"gauge2","#DA70D6",3);
+        gauge_draw(team1_detail,"gauge3","#DA70D6",1);
+        gauge_draw(team2_detail,"gauge4","#1E90FF",2);
+        gauge_draw(team2_detail,"gauge5","#1E90FF",3);
+        gauge_draw(team2_detail,"gauge6","#1E90FF",1);        
     }
 
     function moreinfo_draw(game, selector){
@@ -737,32 +746,101 @@ path.area {
 
         }
     }
-    function gauge_draw(game, selector){
+    function gauge_text(){
+        var svg = d3.select("#gaugetext")
+        svg.append("g")
+            .append("text")
+            .attr("x",50)
+            .attr("y",50)
+            .attr("fill","black")
+            .text("Field Goal Hit Rate")
+            .attr("font-size","12px")
+        svg.append("g")
+            .append("text")
+            .attr("x",660)
+            .attr("y",50)
+            .attr("fill","black")
+            .text("Field Goal Hit Rate")
+            .attr("font-size","12px")
+        svg.append("g")
+            .append("text")
+            .attr("x",250)
+            .attr("y",50)
+            .attr("fill","black")
+            .text("Three Point Hit Rate")
+            .attr("font-size","12px")
+        svg.append("g")
+            .append("text")
+            .attr("x",860)
+            .attr("y",50)
+            .attr("fill","black")
+            .text("Three Point Hit Rate")
+            .attr("font-size","12px")
+        svg.append("g")
+            .append("text")
+            .attr("x",450)
+            .attr("y",50)
+            .attr("fill","black")
+            .text("Free Throws Hit Rate")
+            .attr("font-size","12px")
+        svg.append("g")
+            .append("text")
+            .attr("x",1060)
+            .attr("y",50)
+            .attr("fill","black")
+            .text("Free Throws Hit Rate")
+            .attr("font-size","12px")
+    }
+    function gauge_draw(game, selector,color,i){
         
-      google.charts.setOnLoadCallback(drawChart);
-      function drawChart() {
-        var ht2 = Math.round(100*game.FGM/game.FGA);
-        var ht3 = Math.round(100*game.FG3M/game.FG3A);
-        var ht1 = Math.round(100*game.FTM/game.FTA);
-        var data = google.visualization.arrayToDataTable([
-          ['Label', 'Value'],
-          ['FG Hit Rate', ht2],
-          ['FG3 Hit Rate', ht3],
-          ['FT Hit Rate', ht1]
-        ]);
+    //   google.charts.setOnLoadCallback(drawChart);
+    //   function drawChart() {
+    //     var ht2 = Math.round(100*game.FGM/game.FGA);
+    //     var ht3 = Math.round(100*game.FG3M/game.FG3A);
+    //     var ht1 = Math.round(100*game.FTM/game.FTA);
+    //     var data = google.visualization.arrayToDataTable([
+    //       ['Label', 'Value'],
+    //       ['FG Hit Rate', ht2],
+    //       ['FG3 Hit Rate', ht3],
+    //       ['FT Hit Rate', ht1]
+    //     ]);
 
-        var options = {
-          width: 500, height: 120,
-          minorTicks: 5
-        };
+    //     var options = {
+    //       width: 500, height: 120,
+    //       minorTicks: 5
+    //     };
 
-        var chart = new google.visualization.Gauge(document.getElementById(selector));
+    //     var chart = new google.visualization.Gauge(document.getElementById(selector));
 
-        chart.draw(data, options);
+    //     chart.draw(data, options);
+    // }
+    var ht2 = Math.round(100*game.FGM/game.FGA);
+    var ht3 = Math.round(100*game.FG3M/game.FG3A);
+    var ht1 = Math.round(100*game.FTM/game.FTA);
+    
+    var config = liquidFillGaugeDefaultSettings();
+    config.circleColor = color;
+    config.textColor = "#553300";
+    config.waveTextColor = "#553300";
+    config.waveColor = color;
+    config.circleThickness = 0.2;
+    config.textVertPosition = 0.2;
+    config.textVertPosition = 0.8;
+    config.waveAnimateTime = 2000;
+    config.waveHeight = 0.15;
+    config.waveCount = 2;
+    if (i == 2){
+        var gauge = loadLiquidFillGauge(selector, ht2,config);
+    }
+    if (i == 3){
+        var gauge = loadLiquidFillGauge(selector, ht3,config);
+    } 
+    if (i == 1){
+        var gauge = loadLiquidFillGauge(selector, ht1,config);
     }
   }
 
-
+  
 
     function filter(data, team1, team2){
         var data1 = []
@@ -2401,10 +2479,15 @@ var tooltip = d3.select("body").append("div")
     <span id='team2'></span>
 </div>    
 <div>
+    <svg id='gaugetext' width="100%" height="50"></svg>
+    <svg id='gauge1' width="16%" height="150"></svg>
+    <svg id='gauge2' width="16%" height="150"></svg>
+    <svg id='gauge3' width="16%" height="150"></svg>
+    <svg id='gauge4' width="16%" height="150"></svg>
+    <svg id='gauge5' width="16%" height="150"></svg>
+    <svg id='gauge6' width="16%" height="150"></svg>
     <span id='moreinfo1' ></span>
-    <span id='gauge1' ></span>
-    <span id='moreinfo2' ></span>
-    <span id='gauge2' ></span>    
+    <span id='moreinfo2' ></span>   
 </div>   
 
 </body>
