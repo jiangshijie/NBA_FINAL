@@ -21,8 +21,8 @@ Check it out: <https://jiangshijie.github.io/NBA_FINAL/index.html>.
 We get our data from api of [http://stats.nba.com/](http://stats.nba.com/)  
 Click [this](http://www.gregreda.com/2015/02/15/web-scraping-finding-the-api/) learn how to use it.
 ## Proposal and Process Book #这里要改
-See our [proposal](https://github.com/jiangshijie/DataVisFinal/blob/master/DataVisFianlProposal.pdf) describing prototype of our project , and
-[process book](https://github.com/mbtaviz/mbtaviz.github.io/wiki) with detailed
+See our [proposal](https://github.com/jiangshijie/NBA_FINAL/blob/master/DataVisFianlProposal.pdf) describing prototype of our project , and
+[process book](https://github.com/jiangshijie/NBA_FINAL/blob/master/ProcessBook.pdf) with detailed
 explanations of the designing evolution for each visualization.  
 
 ##Questions We Try to Answer
