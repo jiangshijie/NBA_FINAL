@@ -4,7 +4,7 @@ Visualizing NBA Data
 [![https://www.youtube.com/watch?v=C7mZm9Dh26c&feature=youtu.be](nba.png)](https://www.youtube.com/watch?v=C7mZm9Dh26c&feature=youtu.be)
 
 Visualizing NBA Data is a web based interactive visualization that
-provides a comprehensive way to explore the performance of your favorate team as well as the game history of two teams.
+provides a comprehensive way to explore the performance of your favorite team as well as the game history of two teams.
 
 Check it out: <https://jiangshijie.github.io/NBA_FINAL/index.html>.
 
@@ -29,7 +29,7 @@ explanations of the designing evolution for each visualization.
 For a single team, we tried to show the following facts:
 
 - The location of selected team (map), its wining rate in the past season (size of spot)
-- The oveall performance of the team (radar).
+- The overall performance of the team (radar).
 - Games of this team and how many scores did they win or lose (calendar with color)
 - For a selected game, all players in the game and their performance (bubble chart)
 
@@ -40,4 +40,4 @@ For the game history of two teams, we tried to show the following facts:
 - For a selected game between them, the metrics comparison one by one (bar chart), players' performance (bubble chart), hit rates (wave chart), and score composition (pie chart).  
  
 ##Reference
-Below is the reference we used to create the vis:
+Below is the reference we used to create the project:
