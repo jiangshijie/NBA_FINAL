@@ -3,46 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.js"></script>
     <script src="//d3js.org/d3.v3.min.js"></script>
     <script src="http://d3js.org/topojson.v1.min.js"></script>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-    <script src="liquidFillGauge.js" language="JavaScript"></script>
     <style>
-
-        .axis2 path,
-        .axis2 line {
-          fill: none;
-          stroke: #000;
-          shape-rendering: crispEdges;
-        }
-        
-        .dot2 {
-          stroke: #000;
-        }
-        
-        .tooltip2 {
-          position: absolute;
-          width: 200px;
-          height: 28px;
-          pointer-events: none;
-        }
-
-        .bar--positive {
-            fill: #DA70D6;
-        }
-
-        .bar--negative {
-            fill: #1E90FF;
-        }
-
         div.google-visualization-tooltip {
             font-size:  15px !important;
             padding:3px;
 
 
         }
-
         .text_color {
             fill:red;
         }
@@ -91,85 +61,49 @@
             fill-opacity:.123;
             shape-rendering: crispEdges;
         }
-.MyCircle {
-    fill: #FCAD62;
-}
+        .MyCircle {
+            fill: #FCAD62;
+        }
 
-.line {
-    fill: none;
-    stroke: #FCAD62;
-    stroke-width: 1.5px;
-}
-path.line {
-  fill: none;
-  stroke: #666;
-  stroke-width: 1.5px;
-}
+        .line {
+            fill: none;
+            stroke: #FCAD62;
+            stroke-width: 1.5px;
+        }
+        path.line {
+            fill: none;
+            stroke: #666;
+            stroke-width: 1.5px;
+        }
 
-path.area {
-  fill: #e7e7e7;
-}
+        path.area {
+            fill: #e7e7e7;
+        }
 
-.axis {
-  shape-rendering: crispEdges;
-}
+        .axis {
+            shape-rendering: crispEdges;
+        }
 
-.x.axis line {
-  stroke: #fff;
-}
-.x.axis path {
-  fill: none;
-  stroke: #000;
-}
-.x.axis .minor {
-  stroke-opacity: .5;
-}
-
-.inner_line line {
-    fill: none;
-    stroke:#E7E7E7;
-    shape-rendering: crispEdges;
-}
-.y.axis line,
-.y.axis path {
-  fill: none;
-  stroke: #000;
-}
-
-        .month {
+        .x.axis line {
+            stroke: #fff;
+        }
+        .x.axis path {
             fill: none;
             stroke: #000;
-            stroke-width: 2px;
         }
-        .day {
-            fill: #fff;
-            stroke: #ccc;
-        }
-        /*text    {*/
-            /*font-family:sans-serif;*/
-            /*font-size:1.5em;*/
-        /*}*/
-        .dayLabel   {
-            fill:#aaa;
-            font-size:0.8em;
-        }
-        .monthLabel {
-            text-anchor:middle;
-            font-size:0.8em;
-            fill:#aaa;
-        }
-        .yearLabel  {
-            fill:#aaa;
-            font-size:1.2em;
+        .x.axis .minor {
+            stroke-opacity: .5;
         }
 
-        .key    {font-size:0.5em;}
-        .selected {
-            fill:"blue";
+        .inner_line line {
+            fill: none;
+            stroke:#E7E7E7;
+            shape-rendering: crispEdges;
         }
-        .liquidFillGaugeText { 
-            font-family: Helvetica; 
-            font-weight: bold; 
+        .y.axis line,
+        .y.axis path {
+            fill: none;
+            stroke: #000;
         }
 
     </style>
@@ -229,14 +163,14 @@ path.area {
             var svg = d3.select("#compare")
                     .append("svg")
                     .attr("width",1200)
-                    .attr("height",300)
+                    .attr("height",250)
                     .append("g")
                     .attr("transform","translate(100,50)")
 
             var x = d3.time.scale()
                     .range([0, width]);
             var y = d3.scale.linear()
-                    .range([height,70]);
+                    .range([height,0]);
             var xAxis = d3.svg.axis()
                     .scale(x)
                     .orient("bottom")
@@ -283,38 +217,17 @@ path.area {
                     .duration(1500)
                     .attr("cx", function(){ return 950; })
                     .attr("opacity", 0.8)
-                    .attr("cy", function(){ return 45;})
-                    .attr("fill","#DA70D6");   
+                    .attr("cy", function(){ return 5;})
+                    .attr("fill","#DA70D6");
             svg.append("g")
                     .append("text")
                     .attr("transform","translate(0,0)")
                     .attr("x",962)
-                    .attr("y",47)
+                    .attr("y",7)
                     .text(tmpdata1[0].TEAM_ABBREVIATION)
                     .style("font-size","14px")
                     .transition()
-                    .duration(1500)                    
-                    .fill("black")
-
-            svg.append("g")
-                    .append("text")
-                    .attr("transform","translate(0,0)")
-                    .attr("x",10)
-                    .attr("y",10)
-                    .text("In addition to radar chart, the scores these two teams got from their each historical competitions will aslo show as a slope chart. ")
-                    .style("font-size","17px")
-                    .transition()
-                    .duration(1500)                    
-                    .fill("black")
-            svg.append("g")
-                    .append("text")
-                    .attr("transform","translate(0,0)")
-                    .attr("x",10)
-                    .attr("y",30)
-                    .text("And once you mouseover any of these historical games, more detail information will show below the slope chart.")
-                    .style("font-size","17px")
-                    .transition()
-                    .duration(1500)                    
+                    .duration(1500)
                     .fill("black")
 
 
@@ -328,19 +241,19 @@ path.area {
                     .duration(1500)
                     .attr("cx", function(){ return 950; })
                     .attr("opacity", 0.8)
-                    .attr("cy", function(){ return 60;})
-                    .attr("fill","#1E90FF");   
+                    .attr("cy", function(){ return 20;})
+                    .attr("fill","#1E90FF");
 
             svg.append("g")
                     .append("text")
                     .attr("transform","translate(0,0)")
                     .attr("x",962)
-                    .attr("y",62)
+                    .attr("y",22)
                     .text(tmpdata2[0].TEAM_ABBREVIATION)
                     .style("font-size","14px")
                     .transition()
-                    .duration(1500)                    
-                    .fill("black")                    
+                    .duration(1500)
+                    .fill("black")
 
             for(var i=0; i < tmpdata1.length; i++){
                 // console.log(team1_detail)
@@ -349,7 +262,7 @@ path.area {
                         .on("mouseover",function(){
                             var cur_id = d3.select(this).attr("id");
                             var idx = cur_id.split("_")[1]
-//                            console.log(idx);
+                            console.log(idx);
                             var team1_detail = tmpdata1[idx];
                             var team2_detail = tmpdata2[idx];
                             drawscatter(team1_detail.GAME_ID);
@@ -377,7 +290,6 @@ path.area {
                             var team1_detail = tmpdata1[idx];
                             var team2_detail = tmpdata2[idx];
                             drawscatter(team1_detail.GAME_ID);
-//                            negativeBarChart(team1_detail, team2_detail);
                             detail(team1_detail,team2_detail);
                             moreinfo(team1_detail,team2_detail);
                         })
@@ -418,725 +330,167 @@ path.area {
             }
         })
     }
-    function negativeBarChart(team1, team2) {
-        document.getElementById("teambar").innerHTML="";
-        console.log(document.getElementById("teambar"));
-//        console.log(team2);
-        var data = [];
-        data.push({ name : "Assists", value:(team1.AST-team2.AST)/(team1.AST+team2.AST)});
-        data.push({ name : "Blocks", value:(team1.BLK-team2.BLK)/(team1.BLK+team2.BLK)});
-        data.push({ name : "Defensive Rebounds", value:(team1.DREB-team2.DREB)/(team1.DREB+team2.DREB)});
-        data.push({ name : "Three Point Field Goal Percentage", value:(team1.FG3_PCT-team2.FG3_PCT)});
-        data.push({ name : "Field Goal Percentage", value:(team1.FG_PCT-team2.FG_PCT)});
-        data.push({ name : "Free Throw Percentage", value:(team1.FT_PCT-team2.FT_PCT)});
-        data.push({ name : "Rebounds", value:(team1.REB-team2.REB)/(team1.REB+team2.REB)});
-        data.push({ name : "Offensive Rebounds", value:(team1.OREB-team2.OREB)/(team1.OREB+team2.OREB)});
-        data.push({ name : "Steal", value:(team1.STL-team2.STL)/(team1.STL+team2.STL)});
-        data.push({ name : "Turnover", value:(team1.TOV-team2.TOV)/(team1.TOV+team2.TOV)});
-//        console.log(data);
-
-        var margin = {top: 20, right: 30, bottom: 40, left: 280},
-                width = 960 - margin.left - margin.right,
-                height = 300 - margin.top - margin.bottom;
-
-        var x = d3.scale.linear()
-                .range([0, width]);
-
-        var y = d3.scale.ordinal()
-                .rangeRoundBands([0, height], 0.1);
-
-        var xAxis = d3.svg.axis()
-                .scale(x)
-                .orient("bottom");
-
-        var yAxis = d3.svg.axis()
-                .scale(y)
-                .orient("left")
-                .tickSize(0)
-                .tickPadding(6);
-
-        var textIntroduction = "<div><h2>Performance Difference</h2><p>This bar chart shows the percentage performance difference of two team. This graph provides information of strength of each team.</p></div>"
-        $("#teambar").append(textIntroduction);
-        var svg = d3.select("#teambar").append("svg")
-                .attr("width", width + margin.left + margin.right)
-                .attr("height", height + margin.top + margin.bottom)
-                .append("g")
-                .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-            data.sort(function(a,b){return b.value - a.value});
-        console.log(data);
-
-            x.domain([-1, 1]).nice();
-            y.domain(data.map(function(d) { return d.name; }));
-
-            svg.selectAll(".bar")
-                    .data(data)
-                    .enter().append("rect")
-                    .attr("class", function(d) { return "bar bar--" + (d.value < 0 ? "negative" : "positive"); })
-                    .attr("x", function(d) { return x(Math.min(0, d.value)); })
-                    .attr("y", function(d) { return y(d.name); })
-                    .attr("width", function(d) { return Math.abs(x(d.value) - x(0)); })
-                    .attr("height", y.rangeBand());
-
-            svg.append("g")
-                    .attr("class", "x axis")
-                    .attr("transform", "translate(0," + height + ")")
-                    .call(xAxis);
-
-            svg.append("g")
-                    .attr("class", "y axis")
-                    .attr("transform", "translate(" + x(0) + ",0)")
-                    .call(yAxis);
-            svg.append("g")
-                    .append("circle")
-                    .attr("fill","")
-
-    }
 
     //calendarChart();
     function calendarChart(team) {
 
-        var title="Calendar of Game";
-        var breaks=[-30,-10,0,10, 30];
-        var colours=["#de2d26","#fc9272","#fee0d2","#e5f5e0","#a1d99b", "#31a354"];
-        var content = ["heavily lose", "common lose", "slightly lose", "slightly win", "common win", "heavily win"]
+        d3.csv('data.csv',function(d) {
+            d.MIN = +d.MIN;
+            d.DREB = +d.DREB;
+            d.TOV = +d.TOV;
+            d.REB = +d.REB;
+            d.STL = +d.STL;
+            d.BLK = +d.BLK;
+            d.AST = +d.AST;
+            d.PTS = +d.PTS;
+            d.FGM = +d.FGM;
+            d.FGA = +d.FGA;
+            d.FG_PCT= +d.FG_PCT;
+            d.FG3M = +d.FG3M;
+            d.FG3A = +d.FG3A;
+            d.FG3_PCT = +d.FG3_PCT;
+            d.FT_PCT = +d.FT_PCT;
+            d.OREB = +d.OREB;
+            d.PF = +d.PF;
+            d.FTA = +d.FTA;
+            d.FTM = +d.FTM;
+            d.PLUS_MINUS = + d.PLUS_MINUS;
+            return d;
+        },function(error, data) {
+            d
+            var width = 960,
+                    height = 136,
+                    cellSize = 17; // cell size
+            var percent = d3.format(".1%"),
+                    format = d3.time.format("%Y-%m-%d");
 
-        //general layout information
-        var cellSize = 15;
-        var xOffset=20;
-        var yOffset=60;
-        var calY=50;//offset of calendar in each group
-        var calX=25;
-        var width = 960;
-        var height = 150;
-        var parseDate = d3.time.format("%m/%d/%y").parse;
-        format = d3.time.format("%d-%m-%Y");
-        toolDate = d3.time.format("%m/%d/%y");
-        var teamname = 'GSW';
-        var textIntroduction="<div><h1>Game History</h1><p>The calendar chart shows the game history of selecting team. Red means lose and green means win. The darkness of color means the" +
-                "difference of scores. For example, the dark green grid means the team wins more than 30 points than its competitor in that game. When you select one grid with color, you can get detail information of that game." +
-                "Mouse over the grid to get more information of the game.</p></div>"
-        $("#calendar").append(textIntroduction);
-        d3.csv("data.csv", function(error, data) {
+            var color = d3.scale.quantize()
+                    .domain([-.05, .05])
+                    .range(d3.range(11).map(function(d) { return "q" + d + "-11"; }));
 
-            //set up an array of all the dates in the data which we need to work out the range of the data
-            var dates = new Array();
-            var values = new Array();
-            //parse the data
-            data.forEach(function(d)    {
-                if (d.TEAM_ABBREVIATION === teamname) {
-//                console.log(d.GAME_DATE);
-//                console.log(parseDate(d.GAME_DATE));
-                    dates.push(parseDate(d.GAME_DATE));
-                    values.push(d.PLUS_MINUS);
-                    d.GAME_DATE=parseDate(d.GAME_DATE);
-                    d.PLUS_MINUS= +d.PLUS_MINUS;
-
-                    d.year=d.GAME_DATE.getFullYear();//extract the year from the data
-                }
-
-            });
-
-            var yearlyData = d3.nest()
-                    .key(function(d){return d.year;})
-                    .entries(data);
-            yearlyData.splice(-1);
-
-            var svg = d3.select("#compare").append("svg")
-                    .attr("width","90%")
-                    .attr("viewBox","0 0 "+(xOffset+width)+" 540")
-
-            //title
-            svg.append("text")
-                    .attr("x",xOffset)
-                    .attr("y",20)
-                    .text(title);
-//            console.log(yearlyData);
-            //create an SVG group for each year
-            var cals = svg.selectAll("g")
-                    .data(yearlyData)
-                    .enter()
+            var svg = d3.select(".calendar").append("svg")
+                    .data(data)
+                    .enter().append("svg")
+                    .attr("width", width)
+                    .attr("height", height)
+                    .attr("class", "RdYlGn")
                     .append("g")
-                    .attr("id",function(d){
-                        return d.key;
-                    })
-                    .attr("transform",function(d,i){
-                        return "translate(0,"+(yOffset+(i*(height+calY)))+")";
-                    })
+                    .attr("transform", "translate(" + ((width - cellSize * 53) / 2) + "," + (height - cellSize * 7 - 1) + ")");
 
-            var labels = cals.append("text")
-                    .attr("class","yearLabel")
-                    .attr("x",xOffset)
-                    .attr("y",15)
-                    .text(function(d){return d.key});
+            svg.append("text")
+                    .attr("transform", "translate(-6," + cellSize * 3.5 + ")rotate(-90)")
+                    .style("text-anchor", "middle")
+                    .text(function(d) { return d; });
 
-            //create a daily rectangle for each year
-            var rects = cals.append("g")
-                    .attr("id","alldays")
-                    .selectAll(".day")
-                    .data(function(d) { return d3.time.days(new Date(parseInt(d.key), 0, 1), new Date(parseInt(d.key) + 1, 0, 1)); })
+            var rect = svg.selectAll(".day")
+                    .data(data, function(d) { return d3.time.days(new Date(d, 0, 1), new Date(d + 1, 0, 1)); })
                     .enter().append("rect")
-                    .attr("id",function(d) {
-                        return "_"+format(d);
-                        //return toolDate(d.date)+":\n"+d.value+" dead or missing";
-                    })
                     .attr("class", "day")
                     .attr("width", cellSize)
                     .attr("height", cellSize)
-                    .attr("x", function(d) {
-                        return xOffset+calX+(d3.time.weekOfYear(d) * cellSize);
-                    })
-                    .attr("y", function(d) { return calY+(d.getDay() * cellSize); })
+                    .attr("x", function(d) { return d3.time.weekOfYear(d) * cellSize; })
+                    .attr("y", function(d) { return d.getDay() * cellSize; })
                     .datum(format);
 
-            //create day labels
-            var days = ['Su','Mo','Tu','We','Th','Fr','Sa'];
-            var dayLabels=cals.append("g").attr("id","dayLabels")
-            days.forEach(function(d,i)    {
-                dayLabels.append("text")
-                        .attr("class","dayLabel")
-                        .attr("x",xOffset)
-                        .attr("y",function(d) { return calY+(i * cellSize); })
-                        .attr("dy","0.9em")
-                        .text(d);
-            })
+            rect.append("title")
+                    .text(function(d) { return d; });
 
-            //let's draw the data on
-            var dataRects = cals.append("g")
-                    .attr("id","dataDays")
-                    .selectAll(".dataday")
-                    .data(function(d){
-                        return d.values;
-                    })
-                    .enter()
-                    .append("rect")
-                    .attr("id",function(d) {
-//                    console.log(d);
-                        return format(d.GAME_DATE)+":"+d.PLUS_MINUS;
-                    })
-                    .attr("stroke","#ccc")
-                    .attr("width",cellSize)
-                    .attr("height",cellSize)
-                    .attr("x", function(d){return xOffset+calX+(d3.time.weekOfYear(d.GAME_DATE) * cellSize);})
-                    .attr("y", function(d) { return calY+(d.GAME_DATE.getDay() * cellSize); })
-                    .attr("fill", function(d) {
-                        if (d.PLUS_MINUS<breaks[0]) {
-//                            console.log(colours[0]);
-                            return colours[0];
-                        }
-                        for (i=1;i<breaks.length;i++){
-                            if (d.PLUS_MINUS>=breaks[i - 1]&&d.PLUS_MINUS<breaks[i]){
-                                return colours[i];
-                            }
-                        }
-                        if (d.PLUS_MINUS>=breaks[breaks.length-1]){
-                            return colours[breaks.length];
-                        }
-                    })
-                    .on('click', function(d){
-                        drawscatter(d.GAME_ID);
-                    })
-
-            //append a title element to give basic mouseover info
-            dataRects.append("title")
-                    .text(function(d) { return toolDate(d.GAME_DATE)+":\n"+teamname + ":" + d.PTS + " VS " + d.MATCHUP.slice(-3) +":" + (d.PTS - d.PLUS_MINUS); });
-
-            //add montly outlines for calendar
-            cals.append("g")
-                    .attr("id","monthOutlines")
-                    .selectAll(".month")
-                    .data(function(d) {
-                        return d3.time.months(new Date(parseInt(d.key), 0, 1),
-                                new Date(parseInt(d.key) + 1, 0, 1));
-                    })
+            svg.selectAll(".month")
+                    .data(function(d) { return d3.time.months(new Date(d, 0, 1), new Date(d + 1, 0, 1)); })
                     .enter().append("path")
                     .attr("class", "month")
-                    .attr("transform","translate("+(xOffset+calX)+","+calY+")")
                     .attr("d", monthPath);
 
-            //retreive the bounding boxes of the outlines
-            var BB = new Array();
-            var mp = document.getElementById("monthOutlines").childNodes;
-            for (var i=0;i<mp.length;i++){
-                BB.push(mp[i].getBBox());
+            d3.csv("dji.csv", function(error, csv) {
+                if (error) throw error;
+
+                var data = d3.nest()
+                        .key(function(d) { return d.Date; })
+                        .rollup(function(d) { return (d[0].Close - d[0].Open) / d[0].Open; })
+                        .map(csv);
+
+                rect.filter(function(d) { return d in data; })
+                        .attr("class", function(d) { return "day " + color(data[d]); })
+                        .select("title")
+                        .text(function(d) { return d + ": " + percent(data[d]); });
+            });
+
+            function monthPath(t0) {
+                var t1 = new Date(t0.getFullYear(), t0.getMonth() + 1, 0),
+                        d0 = t0.getDay(), w0 = d3.time.weekOfYear(t0),
+                        d1 = t1.getDay(), w1 = d3.time.weekOfYear(t1);
+                return "M" + (w0 + 1) * cellSize + "," + d0 * cellSize
+                        + "H" + w0 * cellSize + "V" + 7 * cellSize
+                        + "H" + w1 * cellSize + "V" + (d1 + 1) * cellSize
+                        + "H" + (w1 + 1) * cellSize + "V" + 0
+                        + "H" + (w0 + 1) * cellSize + "Z";
             }
 
-            var monthX = new Array();
-            BB.forEach(function(d,i){
-                boxCentre = d.width/2;
-                monthX.push(xOffset+calX+d.x+boxCentre);
-            })
-
-            //create centred month labels around the bounding box of each month path
-            //create day labels
-            var months = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
-            var monthLabels=cals.append("g").attr("id","monthLabels")
-            months.forEach(function(d,i)    {
-                monthLabels.append("text")
-                        .attr("class","monthLabel")
-                        .attr("x",monthX[i])
-                        .attr("y",calY/1.2)
-                        .text(d);
-            })
-
-            //create key
-            var key = svg.append("g")
-                    .attr("id","key")
-                    .attr("class","key")
-                    .attr("transform",function(d){
-                        return "translate("+xOffset+","+(yOffset-(cellSize*1.5))+")";
-                    });
-
-            key.selectAll("rect")
-                    .data(colours)
-                    .enter()
-                    .append("rect")
-                    .attr("width",cellSize)
-                    .attr("height",cellSize)
-                    .attr("x",function(d,i){
-                        return i*130;
-                    })
-                    .attr("fill",function(d){
-                        return d;
-                    });
-
-            key.selectAll("text")
-                    .data(colours)
-                    .enter()
-                    .append("text")
-                    .attr("x",function(d,i){
-                        return cellSize+5+(i*130);
-                    })
-                    .attr("y","1em")
-                    .text(function(d,i){
-                        return content[i];
-//                    if (i<colours.length-1){
-//                        return content[i];
-//                    }   else    {
-//                        return "over "+breaks[i-1];
-//                    }
-                    });
-
-        });//end data load
-
-        //pure Bostock - compute and return monthly path data for any year
-        function monthPath(t0) {
-            var t1 = new Date(t0.getFullYear(), t0.getMonth() + 1, 0),
-                    d0 = t0.getDay(), w0 = d3.time.weekOfYear(t0),
-                    d1 = t1.getDay(), w1 = d3.time.weekOfYear(t1);
-            return "M" + (w0 + 1) * cellSize + "," + d0 * cellSize
-                    + "H" + w0 * cellSize + "V" + 7 * cellSize
-                    + "H" + w1 * cellSize + "V" + (d1 + 1) * cellSize
-                    + "H" + (w1 + 1) * cellSize + "V" + 0
-                    + "H" + (w0 + 1) * cellSize + "Z";
-        }
+        });
     }
     function moreinfo(team1_detail,team2_detail){
-//        console.log(team1_detail);
+        console.log(team1_detail);
         google.charts.load('current', {'packages':['corechart','gauge']});
         moreinfo_draw(team1_detail,"moreinfo1");
         moreinfo_draw(team2_detail,"moreinfo2");
-        clear_gauge();
-        gauge_text();
-        gauge_draw(team1_detail,"gauge1","#DA70D6",2);
-        gauge_draw(team1_detail,"gauge2","#DA70D6",3);
-        gauge_draw(team1_detail,"gauge3","#DA70D6",1);
-        gauge_draw(team2_detail,"gauge4","#1E90FF",2);
-        gauge_draw(team2_detail,"gauge5","#1E90FF",3);
-        gauge_draw(team2_detail,"gauge6","#1E90FF",1);        
+        gauge_draw(team1_detail,"gauge1");
+        gauge_draw(team2_detail,"gauge2");
     }
-    function clear_gauge(){
-        
-        document.getElementById("gaugetext").innerHTML="";
-        document.getElementById("gauge1").innerHTML="";
-        document.getElementById("gauge2").innerHTML="";
-        document.getElementById("gauge3").innerHTML="";
-        document.getElementById("gauge4").innerHTML="";
-        document.getElementById("gauge5").innerHTML="";
-        document.getElementById("gauge6").innerHTML="";
-    }
-
-
 
     function moreinfo_draw(game, selector){
-//      console.log(game)
-      // google.charts.load('current', {'packages':['corechart']});
-      google.charts.setOnLoadCallback(drawChart);
-      function drawChart() {
+        console.log(game)
+        // google.charts.load('current', {'packages':['corechart']});
+        google.charts.setOnLoadCallback(drawChart);
+        function drawChart() {
 
-        var data = google.visualization.arrayToDataTable([
-          ['Score Type', 'Score'],
-          ['Field Goal',game.FGM*2],
-          ['Three Point Field Goal',game.FG3M*3],
-          ['Free Throws',  game.FTM]
-        ]);
+            var data = google.visualization.arrayToDataTable([
+                ['Score Type', 'Score'],
+                ['Field Goal',game.FGM*2],
+                ['Three Point Field Goal',game.FG3M*3],
+                ['Free Throws',  game.FTM]
+            ]);
 
-        var options = {
-          title: game.TEAM_NAME+' Score Structure',
-          height : 250,
-          width : 1000,
-          fontSize : 14,
-          titleTextStyle : {fontSize: 14, italic: true},
-          chartArea : {left:400,top:50,width:'100%',height:'100%'}
-        };
+            var options = {
+                title: game.TEAM_NAME+' Score Structure',
+                height : 250,
+                width : 1000,
+                fontSize : 14,
+                titleTextStyle : {fontSize: 14, italic: true},
+                chartArea : {left:400,top:50,width:'100%',height:'100%'}
+            };
 
-        var chart = new google.visualization.PieChart(document.getElementById(selector));
-        chart.draw(data, options);
+            var chart = new google.visualization.PieChart(document.getElementById(selector));
+            chart.draw(data, options);
 
 
         }
     }
-    function gauge_text(){
-        var svg = d3.select("#gaugetext")
-        var height = 90;
-        svg.append("g")
-            .append("text")
-            .attr("x",50)
-            .attr("y",height)
-            .attr("fill","black")
-            .text("Field Goal Hit Rate")
-            .attr("font-size","12px")
-        svg.append("g")
-            .append("text")
-            .attr("x",660)
-            .attr("y",height)
-            .attr("fill","black")
-            .text("Field Goal Hit Rate")
-            .attr("font-size","12px")
-        svg.append("g")
-            .append("text")
-            .attr("x",250)
-            .attr("y",height)
-            .attr("fill","black")
-            .text("Three Point Hit Rate")
-            .attr("font-size","12px")
-        svg.append("g")
-            .append("text")
-            .attr("x",860)
-            .attr("y",height)
-            .attr("fill","black")
-            .text("Three Point Hit Rate")
-            .attr("font-size","12px")
-        svg.append("g")
-            .append("text")
-            .attr("x",450)
-            .attr("y",height)
-            .attr("fill","black")
-            .text("Free Throws Hit Rate")
-            .attr("font-size","12px")
-        svg.append("g")
-            .append("text")
-            .attr("x",1060)
-            .attr("y",height)
-            .attr("fill","black")
-            .text("Free Throws Hit Rate")
-            .attr("font-size","12px")
-        svg.append("g")
-            .append("text")
-            .attr("x",120)
-            .attr("y",32)
-            .attr("fill","black")
-            .text("The same with single team, the players’ performance is presented in above bubble chart.Besides, we support more detail comparison of the two team:")
-            .attr("font-size","17px")    
+    function gauge_draw(game, selector){
 
-        svg.append("g")
-            .append("text")
-            .attr("x",120)
-            .attr("y",52)
-            .attr("fill","black")
-            .text("hit rate and score composition. From below wave charts and pie charts, we can know the hit rate of different type shoot and the score structure.")
-            .attr("font-size","17px")  
+        google.charts.setOnLoadCallback(drawChart);
+        function drawChart() {
+            var ht2 = Math.round(100*game.FGM/game.FGA);
+            var ht3 = Math.round(100*game.FG3M/game.FG3A);
+            var ht1 = Math.round(100*game.FTM/game.FTA);
+            var data = google.visualization.arrayToDataTable([
+                ['Label', 'Value'],
+                ['FG Hit Rate', ht2],
+                ['FG3 Hit Rate', ht3],
+                ['FT Hit Rate', ht1]
+            ]);
 
-    }
-    function bar_text(){
-        var svg = d3.select("#bartext")
-        svg.append("g")
-            .append("text")
-            .attr("x",120)
-            .attr("y",20)
-            .attr("fill","black")
-            .text("The first bar chart list almost all detail information in the selected game. The second bar chart shows percentage comparison in key metrics.")
-            .attr("font-size","17px")
+            var options = {
+                width: 500, height: 120,
+                minorTicks: 5
+            };
+
+            var chart = new google.visualization.Gauge(document.getElementById(selector));
+
+            chart.draw(data, options);
         }
-
-
-
-    function gauge_draw(game, selector,color,i){
-        
-    //   google.charts.setOnLoadCallback(drawChart);
-    //   function drawChart() {
-    //     var ht2 = Math.round(100*game.FGM/game.FGA);
-    //     var ht3 = Math.round(100*game.FG3M/game.FG3A);
-    //     var ht1 = Math.round(100*game.FTM/game.FTA);
-    //     var data = google.visualization.arrayToDataTable([
-    //       ['Label', 'Value'],
-    //       ['FG Hit Rate', ht2],
-    //       ['FG3 Hit Rate', ht3],
-    //       ['FT Hit Rate', ht1]
-    //     ]);
-
-    //     var options = {
-    //       width: 500, height: 120,
-    //       minorTicks: 5
-    //     };
-
-    //     var chart = new google.visualization.Gauge(document.getElementById(selector));
-
-    //     chart.draw(data, options);
-    // }
-    var ht2 = Math.round(100*game.FGM/game.FGA);
-    var ht3 = Math.round(100*game.FG3M/game.FG3A);
-    var ht1 = Math.round(100*game.FTM/game.FTA);
-    
-    var config = liquidFillGaugeDefaultSettings();
-    config.circleColor = color;
-    config.textColor = "#553300";
-    config.waveTextColor = "#553300";
-    config.waveColor = color;
-    config.circleThickness = 0.2;
-    config.textVertPosition = 0.2;
-    config.textVertPosition = 0.8;
-    config.waveAnimateTime = 2000;
-    config.waveHeight = 0.15;
-    config.waveCount = 2;
-    if (i == 2){
-        var gauge = loadLiquidFillGauge(selector, ht2,config);
     }
-    if (i == 3){
-        var gauge = loadLiquidFillGauge(selector, ht3,config);
-    } 
-    if (i == 1){
-        var gauge = loadLiquidFillGauge(selector, ht1,config);
-    }
-  }
-    window.onload = function(){
-        var team;
-        var margin = {left:30, right : 30, top:300, bottom: 0};
-        var width = 1100 + margin.left + margin.right,
-                height = 150 + margin.top + margin.bottom;
 
 
-        //Define map projection
-        var projection = d3.geo.albersUsa()
-                .translate([width/3, height/3.5 + 80])
-                .scale([900]);
-
-
-        //Define path generator
-        var path = d3.geo.path()
-                .projection(projection);
-
-        //Map the winrate to opacity[0.3, 0.9]
-        var Opacity = d3.scale.linear()
-                .range([0.2, 0.9]);
-
-        //Map the rank to radius[2, 20]
-        var Scale = d3.scale.linear()
-                .range([2, 20]);
-//    var head = d3.select("body")
-//            .append("svg")
-//            .attr("width", 1160)
-//            .attr("height", 200)
-//
-//            head.append("g")
-//            .append("text")
-//            .attr("x",400)
-//            .attr("y", 30)
-//            .text("NBA VISUALIZATION")
-//            .attr("font-size","30px");
-
-        //Create SVG element
-        var svg = d3.select("#mapchart")
-                .append("svg")
-                .attr("width", width)
-                .attr("height", height)
-                .on("click", stopped, true);
-        //Creater a group to store states
-        var g = svg.append("g")
-                .attr("class","map");
-
-//    var head = svg.append("text")
-//            .attr("x", 200)
-//            .attr("y", 30)
-//            .text("NBA VISUALIZATION")
-//            .attr("font-size","20px")
-
-
-        var div = d3.select("body").append("div")
-                .attr("class", "tooltip")
-                .style("opacity", 0);
-
-        //Load in state data, draw the map
-        d3.csv("US-states.csv", function(data) {
-            //Load in GeoJSON data
-            d3.json("US-geo.json", function(json) {
-                //Merge the EastorWest data and GeoJSON
-                //Loop through once for each EastorWest data value
-
-                for (var i = 0; i < data.length; i++) {
-                    var dataState = data[i].state;				//Grab state name
-                    var dataValue = parseFloat(data[i].value);	//Grab data value, and convert from string to float
-                    var dataEASTorWEST = data[i].EASTorWEST;
-                    //Find the corresponding state inside the GeoJSON
-                    for (var j = 0; j < json.features.length; j++) {
-                        var jsonState = json.features[j].properties.name;
-                        if (dataState == jsonState) {
-                            //Copy the data value into the JSON
-                            json.features[j].properties.EASTorWEST = dataEASTorWEST;
-                            //Stop looking through the JSON
-                            break;
-                        }
-                    }
-                }
-
-                //Bind data and create one path per GeoJSON feature
-                g.selectAll("path")
-                        .data(json.features).enter()
-                        .append("path")
-                        .attr("stroke","white")
-                        .attr("stroke-width",2)
-                        .attr("d", path)
-                        .attr("class", function(d) {
-                            return d.properties.postal;})
-                        .style("fill", function(d) {
-                            //Get data value
-                            var EASTorWEST = d.properties.EASTorWEST;
-                            if (EASTorWEST) {
-                                //If value exists…
-                                if (EASTorWEST == "East") {
-                                    return "#C6E2FF";
-                                } else {
-                                    return "#FFB6C1";
-                                }
-                            } else {
-                                //If value is undefined…
-                                return "#CCCCCC";
-                            }
-                        });
-//                    .on("click", stateClick);
-                //Load in NBA teams data
-                d3.csv("NBA-teams.csv", function(data) {
-                    //Map the rank to radius[2, 20]
-                    Scale.domain([0, d3.max(data, function(d) { return d.winrate; })]);
-
-                    //Map the rank to opacity[0.3, 0.9]
-                    Opacity.domain([0, d3.max(data, function(d) { return d.winrate; })]);
-                    //Create nodes group
-                    var nodes = g.selectAll("nodes")
-                            .data(data)
-                            .enter()
-                            .append("g")
-                            .attr("class", "team")
-                            .attr("transform", function(d) {
-                                return "translate(" + projection([d.lon, d.lat])[0] + "," + projection([d.lon, d.lat])[1] + ")";});
-
-                    var teamList = [];
-
-                    //Circles for teams
-                    nodes.append("circle")
-                            .attr("class", "AllCircle")
-                            .attr("r", function(d){return d.winrate/10 +3;})
-                            .style("fill", function(d){
-                                if (d.EASTorWEST == "East") {
-                                    return "blue";
-                                } else {
-                                    return "red";
-                                };
-                            })
-                            .style("opacity", 0.8)
-                            .attr("stroke","white")
-                            .attr("stroke-width",0.5)
-                            .on("mouseover",function(d){
-//                            console.log(d.teamname);
-//                            console.log(d3.event.pageX);
-//                            console.log(d3.event.pageY);
-                                div.transition()
-                                        .duration(200)
-                                        .style("opacity", .9);
-                                div.html(d.teamname)
-                                        .style("left",d3.event.pageX)
-                                        .style("top",d3.event.pageY);
-                            })
-                            .on("mouseout", function(d){
-                                div.transition()
-                                        .duration(500)
-                                        .style("opacity", 0);
-                            })
-                            .on("click", function(d){
-//                            d3.selectAll("circle").style("fill",function(d){
-//                                if (d.EASTorWEST == "East") {
-//                                    return "blue";
-//                                } else {
-//                                    return "red";
-//                                };
-//                            });
-                                team = d.abb;
-                                var color;
-                                if (teamList.indexOf(team)==-1 && teamList.length >= 2) {
-                                    alert("Cannot select more than two teams");
-                                    return;
-                                } else if (teamList.indexOf(team) == -1 && teamList.length < 2) {
-
-                                    teamList.push(team);
-                                    color = 'yellow';
-                                } else if (teamList.indexOf(team)!= -1) {
-                                    if (d.EASTorWEST == 'East'){
-                                        color = 'blue';
-                                    } else {
-                                        color = 'red';
-                                    }
-                                    teamList.splice(teamList.indexOf(team), 1);
-                                }
-                                d3.select(this).style("fill", color);
-                                if (teamList.length == 0) {
-                                    document.getElementById("calendar").innerHTML="";
-                                }
-                                if (teamList.length == 1) {
-                                    clear_gauge();
-                                    calendarChart(teamList[0]);
-                                    document.getElementById("moreinfo1").innerHTML="";
-                                    document.getElementById("moreinfo2").innerHTML="";
-                                }
-                                if (teamList.length == 2) {
-                                    compare(teamList);
-                                    document.getElementById("team1").innerHTML="";
-                                    document.getElementById("team2").innerHTML="";
-                                    document.getElementById("teambar").innerHTML="";
-                                    document.getElementById("calendar").innerHTML="";
-                                } else {
-//                                console.log("d3.selectAll()");
-//                                console.log(d3.selectAll("#lineChart"));
-//                                console.log((document.getElementsByClassName("lineChart")));
-                                    document.getElementById("compare").innerHTML="";
-                                    document.getElementById("teambar").innerHTML="";
-                                    document.getElementById("team1").innerHTML="";
-                                    document.getElementById("team2").innerHTML="";
-                                }
-                                svg.selectAll("g.barChart").remove();
-                                svg.selectAll("g.randar").remove();
-                                d3.selectAll("svg.scatter").remove();
-//                            console.log(teamList);
-                                drawRandarChart(teamList,[0,900]);
-                            });
-//                        .style("cursor", "pointer")
-
-                    //Text for temm abbreviation
-                    nodes.append("text")
-                            .attr("class", function(d) {
-                                return "text " + d.abb;})
-                            .attr("dx", function(d){
-                                return Scale(d.winrate);})
-                            .attr("dy", ".3em")
-                            .attr("font-size", 13)
-                            .style("fill", "#888888")
-                            .style("font-weight", "bold")
-                            .style("cursor", "default")
-                            .text(function(d) {
-                                return d.abb;});
-                });
-            });
-        });
-    }
-  
 
     function filter(data, team1, team2){
         var data1 = []
@@ -1158,11 +512,9 @@ path.area {
     //     //console.log(game);
     // }
     function detail(team1_detail,team2_detail){
-        negativeBarChart(team1_detail, team2_detail);
-        bar_text();
+
         detail_1(team1_detail);
         detail_2(team2_detail);
-        
     }
 
     function detail_1(game){
@@ -1853,11 +1205,10 @@ path.area {
                 .attr("opacity", 1)
     }
 
-<<<<<<< Updated upstream
     var team;
     var margin = {left:30, right : 30, top:300, bottom: 0};
     var width = 1100 + margin.left + margin.right,
-            height = 150 + margin.top + margin.bottom;
+            height = 100 + margin.top + margin.bottom;
 
 
     //Define map projection
@@ -1948,6 +1299,8 @@ path.area {
 
                 //Map the rank to opacity[0.3, 0.9]
                 Opacity.domain([0, d3.max(data, function(d) { return d.winrate; })]);
+
+
                 //Create nodes group
                 var nodes = g.selectAll("nodes")
                         .data(data)
@@ -1962,7 +1315,7 @@ path.area {
                 //Circles for teams
                 nodes.append("circle")
                         .attr("class", "AllCircle")
-                        .attr("r", function(d){return d.winrate/10 +3;})
+                        .attr("r", 8)
                         .style("fill", function(d){
                             if (d.EASTorWEST == "East") {
                                 return "blue";
@@ -2019,37 +1372,44 @@ path.area {
                                 document.getElementById("calendar").innerHTML="";
                             }
                             if (teamList.length == 1) {
-                                clear_gauge();
                                 calendarChart(teamList[0]);
-                                document.getElementById("moreinfo1").innerHTML="";
-                                document.getElementById("moreinfo2").innerHTML="";
-                                document.getElementById("bartext").innerHTML="";
                             }
                             if (teamList.length == 2) {
                                 compare(teamList);
                                 document.getElementById("team1").innerHTML="";
                                 document.getElementById("team2").innerHTML="";
-                                document.getElementById("teambar").innerHTML="";
                                 document.getElementById("calendar").innerHTML="";
                             } else {
 //                                console.log("d3.selectAll()");
 //                                console.log(d3.selectAll("#lineChart"));
 //                                console.log((document.getElementsByClassName("lineChart")));
                                 document.getElementById("compare").innerHTML="";
-                                document.getElementById("teambar").innerHTML="";
                                 document.getElementById("team1").innerHTML="";
                                 document.getElementById("team2").innerHTML="";
                             }
                             svg.selectAll("g.barChart").remove();
                             svg.selectAll("g.randar").remove();
-                            d3.selectAll("svg.scatter").remove();
 //                            console.log(teamList);
                             drawRandarChart(teamList,[0,900]);
                         });
 //                        .style("cursor", "pointer")
-=======
->>>>>>> Stashed changes
 
+                //Text for temm abbreviation
+                nodes.append("text")
+                        .attr("class", function(d) {
+                            return "text " + d.abb;})
+                        .attr("dx", function(d){
+                            return Scale(d.winrate);})
+                        .attr("dy", ".3em")
+                        .attr("font-size", 13)
+                        .style("fill", "#888888")
+                        .style("font-weight", "bold")
+                        .style("cursor", "default")
+                        .text(function(d) {
+                            return d.abb;});
+            });
+        });
+    });
     function transit() {
         d3.selectAll(".AllCircle")
                 .transition()
@@ -2245,7 +1605,6 @@ path.area {
                 //Append a g element
                 //这里修改了一下，直接在同一个svg上画雷达图
                 d3.selectAll("g.randar").remove();
-                var svg = d3.select("#mapchart").select("svg");
                 var g = svg.append("g")
                         .attr("class", "randar")
                         .attr("transform", "translate(" + (cfg.w / 2 + cfg.margin.left + 700) + "," + (cfg.h / 2 + cfg.margin.top) + ")");
@@ -2431,10 +1790,10 @@ path.area {
                             return radarLine(d);
                         })
                         .style("fill", function (d, i) {
-//                            console.log("iisha");
-//                            console.log(i);
-//                            console.log(color(i));
-//                            console.log(cfg.color);
+                            console.log("iisha");
+                            console.log(i);
+                            console.log(color(i));
+                            console.log(cfg.color);
                             return cfgcolor[i];
                         })
                         .style("fill-opacity", cfg.opacityArea)
@@ -2492,34 +1851,34 @@ path.area {
                 /////////////////////////////////////////////////////////
 
 
-            //Append the backgrounds
-            blobWrapper
-                    .append("path")
-                    .attr("class", "radarArea")
-                    .attr("d", function (d, i) {
-                        return radarLine(d);
-                    })
-                    .style("fill", function (d, i) {
+                //Append the backgrounds
+                blobWrapper
+                        .append("path")
+                        .attr("class", "radarArea")
+                        .attr("d", function (d, i) {
+                            return radarLine(d);
+                        })
+                        .style("fill", function (d, i) {
 //                        console.log(cfg.color)
-                        return cfgcolor[i];
-                    })
-                    .style("fill-opacity", cfg.opacityArea)
-                    .on('mouseover', function (d, i) {
-                        //Dim all blobs
-                        d3.selectAll(".radarArea")
-                                .transition().duration(200)
-                                .style("fill-opacity", 0.1);
-                        //Bring back the hovered over blob
-                        d3.select(this)
-                                .transition().duration(200)
-                                .style("fill-opacity", 0.7);
-                    })
-                    .on('mouseout', function () {
-                        //Bring back all blobs
-                        d3.selectAll(".radarArea")
-                                .transition().duration(200)
-                                .style("fill-opacity", cfg.opacityArea);
-                    });
+                            return cfgcolor[i];
+                        })
+                        .style("fill-opacity", cfg.opacityArea)
+                        .on('mouseover', function (d, i) {
+                            //Dim all blobs
+                            d3.selectAll(".radarArea")
+                                    .transition().duration(200)
+                                    .style("fill-opacity", 0.1);
+                            //Bring back the hovered over blob
+                            d3.select(this)
+                                    .transition().duration(200)
+                                    .style("fill-opacity", 0.7);
+                        })
+                        .on('mouseout', function () {
+                            //Bring back all blobs
+                            d3.selectAll(".radarArea")
+                                    .transition().duration(200)
+                                    .style("fill-opacity", cfg.opacityArea);
+                        });
 
                 //Wrapper for the invisible circles on top
                 var blobCircleWrapper = g.selectAll(".radarCircleWrapper")
@@ -2624,181 +1983,62 @@ path.area {
         })
     }
 
-function drawscatter(gameid){
+    function drawscatter(gameid){
 
-	d3.csv("data2.csv", function(error, data) {
-  var margin2 = {top: 20, right: 20, bottom: 30, left: 40},
-    width2 = 960 - margin2.left - margin2.right,
-    height2 = 500 - margin2.top - margin2.bottom;
+        d3.csv("data2.csv", function (data_player)
+        {
+            var game = data_player.filter(function(d){return (d.GAME_ID == gameid)})
+            console.log(game);
+            //var cols =[['MIN','PTS','NAME','TEAM']]
+            //var score_time = game.map(function(d){return [parseFloat(d.MIN),parseFloat(d.PTS),d.PLAYER_NAME,d.TEAM_ABBREVIATION]})
 
-/* 
- * value accessor - returns the value to encode for a given data object.
- * scale - maps value to a visual display encoding, such as a pixel position.
- * map function - maps from data value to display value
- * axis - sets up axis
- */ 
+            var cols =[['NAME','MIN','PTS','TEAM','PTS/MIN']]
+            var score_time = game.map(function(d){var name = d.PLAYER_NAME.split(" ");
+                return [name[1],parseFloat(d.MIN),parseFloat(d.PTS),d.TEAM_ABBREVIATION,Math.sqrt(parseFloat(d.PTS)/parseFloat(d.MIN))]})
 
-// setup x 
-var xValue = function(d) { return d.MIN;}, // data -> value
-    xScale = d3.scale.linear().range([0, width2]), // value -> display
-    xMap = function(d) { return xScale(xValue(d));}, // data -> display
-    xAxis = d3.svg.axis().scale(xScale).orient("bottom");
+            var data3 = cols.concat(score_time)
+            console.log(data3);
 
-// setup y
-var yValue = function(d) { return d["PTS"];}, // data -> value
-    yScale = d3.scale.linear().range([height2, 0]), // value -> display
-    yMap = function(d) { return yScale(yValue(d));}, // data -> display
-    yAxis = d3.svg.axis().scale(yScale).orient("left");
+            google.charts.load('current', {'packages':['corechart']});
+            google.charts.setOnLoadCallback(drawSeriesChart);
 
-// setup fill color
-var cValue = function(d) { return d.TEAM_NAME;},
-    color = d3.scale.category10();
+            function drawSeriesChart() {
 
-// add the graph canvas to the body of the webpage
-d3.selectAll("svg.scatter").remove();
-var textIntroduction = "<div><h2>Player Performance</h2><p>This scatter chart shows players performance of one game. The x axi is the playing time. The y axis is the scores the player get. The size of the circle means the efficiency of the player. " +
-        "The circle in the top-right means the player plays longer time and get higher score than ohters. Mouse over the circle to get more detail of the player.</p></div>"
-        $("#scatter").append(textIntroduction);
-        var svg = d3.select("#scatter").append("svg")
-    .attr("class","scatter")
-    .attr("width", width2 + margin2.left + margin2.right)
-    .attr("height", height2 + margin2.top + margin2.bottom)
-  .append("g")
-    .attr("transform", "translate(" + margin2.left + "," + margin2.top + ")");
+                var data = google.visualization.arrayToDataTable(data3);
 
-// add the tooltip area to the webpage
-var tooltip = d3.select("body").append("div")
-    .attr("class", "tooltip2")
-    .style("opacity", 0);
+                var options = {
+                    title: 'SCORES VS. TIME IN GAME',
+                    hAxis: {title: 'TIME IN GAME'},
+                    vAxis: {title: 'SCORES'},
+                    bubble: {textStyle: {fontSize: 10}},
+                    colors: ['#DA70D6', '#1E90FF']
+                    //,sizeAxis: {minValue: 1,  maxSize: 16}
+                };
 
-  // change string (from CSV) into number format
-  data = data.filter(function(d){return d.GAME_ID == gameid});
-  data.forEach(function(d) {
-    d.MIN = +d.MIN;
-    d["PTS"] = +d["PTS"];
-//    console.log(d);
-  });
+                var chart = new google.visualization.BubbleChart(document.getElementById('series_chart_div'));
+                chart.draw(data, options);
+            }
+        })//end of read data2.csv
 
-  // don't want dots overlapping axis, so add in buffer to data domain
-  xScale.domain([d3.min(data, xValue)-1, d3.max(data, xValue)+1]);
-  yScale.domain([d3.min(data, yValue)-1, d3.max(data, yValue)+1]);
-
-  // x-axis
-  svg.append("g")
-      .attr("class", "x axis2")
-      .attr("transform", "translate(0," + height2 + ")")
-      .call(xAxis)
-    .append("text")
-      .attr("class", "label")
-      .attr("x", width2)
-      .attr("y", -6)
-      .style("text-anchor", "end")
-      .text("MIN");
-
-  // y-axis
-  svg.append("g")
-      .attr("class", "y axis2")
-      .call(yAxis)
-    .append("text")
-      .attr("class", "label")
-      .attr("transform", "rotate(-90)")
-      .attr("y", 6)
-      .attr("dy", ".71em")
-      .style("text-anchor", "end")
-      .text("PTS");
-
-  // draw dots
-  svg.selectAll(".dot2")
-      .data(data)
-    .enter().append("circle")
-      .attr("class", "dot2")
-      .attr("r", function(d){return 3.5+yValue(d)*10/xValue(d)})
-      .attr("cx", xMap)
-      .attr("cy", yMap)
-      .style("fill", function(d) { return color(cValue(d));}) 
-      .on("mouseover", function(d) {
-          tooltip.transition()
-               .duration(200)
-               .style("opacity", .9);
-          tooltip.html(d["PLAYER_NAME"] + "<br/> (" + xValue(d) 
-          + ", " + yValue(d) + ")")
-               .style("left", (d3.event.pageX + 5) + "px")
-               .style("top", (d3.event.pageY - 28) + "px");
-      })
-      .on("mouseout", function(d) {
-          tooltip.transition()
-               .duration(500)
-               .style("opacity", 0);
-      });
-
-  // draw legend
-//  console.log(color)
-  var legend = svg.selectAll(".legend")
-      .data(color.domain())
-    .enter().append("g")
-      .attr("class", "legend")
-      .attr("transform", function(d, i) { return "translate("+ -width2*0.75 +"," + i * 20 + ")"; });
-
-  // draw legend colored rectangles
-  legend.append("rect")
-      .attr("x", width2 - 18)
-      .attr("width", 18)
-      .attr("height", 18)
-      .style("fill", color);
-
-  // draw legend text
-  legend.append("text")
-      .attr("x", width2 - 24)
-      .attr("y", 9)
-      .attr("dy", ".35em")
-      .style("text-anchor", "end")
-      .text(function(d) { return d;})
-});
-
-}
+    }
 </script>
-<div>
-<h1>NBA Visualization</h1>
-<p style="font-size:20px">An interactive exploration of NBA Games</p>
-<p style="color: grey">Shijie Jiang, Qianchao Nie and Yanran Ma - Dec 11, 2016</p>
-</div>
-<div>
-    <h2>The Map & Randar Chart</h2>
-    <p>The map shows the physical location of each team. Red means the west and blue means the east. The size of the circle shows the winning rate of the team in 15-16 season.
-    You can get information of single team by clicking only one node on the map or get comparison data of two team by selecting two nodes. After clicking the node/nodes, the randar chart comes
-    out with the information of 6 key metrics in NBA games - Assist, rebound, defence rebound, steal, block and turnover.</p>
-</div>
-
-<div>
-    <span id='mapchart'></span>
-</div>
-
 <div>
     <span id='calendar'></span>
 </div>
-
 <div>
-    <span id='compare'></span>
+    <span class="lineChart" id='compare'></span>
 </div>
 <div>
-    <svg id='bartext' width="100%" height="20"></svg>
-    <span id='team1'></span>
-    <span id='team2'></span>
-    <span id='teambar'></span>
-</div>    
+    <span class="lineChart" id='team1'></span>
+    <span class="lineChart" id='team2'></span>
+</div>
 <div>
-    <span id='scatter'></span>
-    <svg id='gaugetext' width="100%" height="90"></svg>
-    <svg id='gauge1' width="16%" height="150"></svg>
-    <svg id='gauge2' width="16%" height="150"></svg>
-    <svg id='gauge3' width="16%" height="150"></svg>
-    <svg id='gauge4' width="16%" height="150"></svg>
-    <svg id='gauge5' width="16%" height="150"></svg>
-    <svg id='gauge6' width="16%" height="150"></svg>
     <span id='moreinfo1' ></span>
-    <span id='moreinfo2' ></span>   
+    <span id='gauge1' ></span>
+    <span id='moreinfo2' ></span>
+    <span id='gauge2' ></span>
 </div>
-
+<div id="series_chart_div" style="width: 1000px; height: 600px;"></div>
 </body>
 
 </html>
