@@ -43,3 +43,4 @@ For the game history of two teams, we tried to show the following facts:
 Below is the reference we used to create the project:
 
 - [Wave chart](http://bl.ocks.org/brattonc/5e5ce9beee483220e2f6)
+- [Scatter chart](http://bl.ocks.org/weiglemc/6185069)
