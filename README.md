@@ -44,3 +44,5 @@ Below is the reference we used to create the project:
 
 - [Wave chart](http://bl.ocks.org/brattonc/5e5ce9beee483220e2f6)
 - [Scatter chart](http://bl.ocks.org/weiglemc/6185069)
+- [Map](https://github.com/LemonChiu/NBA-Visualization)
+- [Negative Bar Chart](https://bl.ocks.org/mbostock/2368837)
