@@ -207,6 +207,10 @@ path.area {
             return d;
         }, function (error, data) {
             if (error) throw error;
+            var textIntroduction = "<div><h2>Competition History</h2><p>In addition to radar chart, the scores these two teams got from their each historical competitions will aslo show as a slope chart.And once you mouseover any of these historical games, more detail information will show below the slope chart." +
+                    "The first bar chart list almost all detail information in the selected game with real statistic. The second bar chart shows percentage difference in key metrics."+
+                    "The same with single team, the players’ performance is presented in above bubble chart.Besides, we support more detail comparison of the two team:hit rate and score composition. From below wave charts and pie charts, we can know the score structure and the hit rate of different type shoot.</p></div>"
+            $("#compare").append(textIntroduction);
             var tmpdata = filter(data, team1, team2)
             var tmpdata1 = tmpdata[0];
             var tmpdata2 = tmpdata[1];
@@ -247,7 +251,6 @@ path.area {
                     .orient("left");
             x.domain(d3.extent(tmpdata, function(d) { return d.GAME_DATE; }));
             y.domain([d3.min(tmpdata,function(d){return d.PTS;})-5,d3.max(tmpdata,function(d){return d.PTS;})+5]);
-
 
             svg.append("g")
                     .attr("class", "x axis")
@@ -296,29 +299,26 @@ path.area {
                     .duration(1500)                    
                     .fill("black")
 
-            svg.append("g")
-                    .append("text")
-                    .attr("transform","translate(0,0)")
-                    .attr("x",10)
-                    .attr("y",10)
-                    .text("In addition to radar chart, the scores these two teams got from their each historical competitions will aslo show as a slope chart. ")
-                    .style("font-size","17px")
-                    .transition()
-                    .duration(1500)                    
-                    .fill("black")
-            svg.append("g")
-                    .append("text")
-                    .attr("transform","translate(0,0)")
-                    .attr("x",10)
-                    .attr("y",30)
-                    .text("And once you mouseover any of these historical games, more detail information will show below the slope chart.")
-                    .style("font-size","17px")
-                    .transition()
-                    .duration(1500)                    
-                    .fill("black")
-
-
-
+//            svg.append("g")
+//                    .append("text")
+//                    .attr("transform","translate(0,0)")
+//                    .attr("x",10)
+//                    .attr("y",10)
+//                    .text("In addition to radar chart, the scores these two teams got from their each historical competitions will aslo show as a slope chart. ")
+//                    .style("font-size","17px")
+//                    .transition()
+//                    .duration(1500)
+//                    .fill("black")
+//            svg.append("g")
+//                    .append("text")
+//                    .attr("transform","translate(0,0)")
+//                    .attr("x",10)
+//                    .attr("y",30)
+//                    .text("And once you mouseover any of these historical games, more detail information will show below the slope chart.")
+//                    .style("font-size","17px")
+//                    .transition()
+//                    .duration(1500)
+//                    .fill("black")
             svg.append("g")
                     .append("circle")
                     .attr("transform","translate(0,0)")
@@ -420,7 +420,6 @@ path.area {
     }
     function negativeBarChart(team1, team2) {
         document.getElementById("teambar").innerHTML="";
-        console.log(document.getElementById("teambar"));
 //        console.log(team2);
         var data = [];
         data.push({ name : "Assists", value:(team1.AST-team2.AST)/(team1.AST+team2.AST)});
@@ -454,7 +453,6 @@ path.area {
                 .orient("left")
                 .tickSize(0)
                 .tickPadding(6);
-
 
         var svg = d3.select("#teambar").append("svg")
                 .attr("width", width + margin.left + margin.right)
@@ -744,7 +742,7 @@ path.area {
         gauge_draw(team2_detail,"gauge6","#1E90FF",1);        
     }
     function clear_gauge(){
-        
+        document.getElementById("information").innerHTML="";
         document.getElementById("gaugetext").innerHTML="";
         document.getElementById("gauge1").innerHTML="";
         document.getElementById("gauge2").innerHTML="";
@@ -829,33 +827,34 @@ path.area {
             .attr("fill","black")
             .text("Free Throws Hit Rate")
             .attr("font-size","12px")
-        svg.append("g")
-            .append("text")
-            .attr("x",120)
-            .attr("y",32)
-            .attr("fill","black")
-            .text("The same with single team, the players’ performance is presented in above bubble chart.Besides, we support more detail comparison of the two team:")
-            .attr("font-size","17px")    
 
-        svg.append("g")
-            .append("text")
-            .attr("x",120)
-            .attr("y",52)
-            .attr("fill","black")
-            .text("hit rate and score composition. From below wave charts and pie charts, we can know the score structure and the hit rate of different type shoot.")
-            .attr("font-size","17px")  
+//        svg.append("g")
+//            .append("text")
+//            .attr("x",120)
+//            .attr("y",32)
+//            .attr("fill","black")
+//            .text("The same with single team, the players’ performance is presented in above bubble chart.Besides, we support more detail comparison of the two team:")
+//            .attr("font-size","17px")
+//
+//        svg.append("g")
+//            .append("text")
+//            .attr("x",120)
+//            .attr("y",52)
+//            .attr("fill","black")
+//            .text("hit rate and score composition. From below wave charts and pie charts, we can know the score structure and the hit rate of different type shoot.")
+//            .attr("font-size","17px")
 
     }
-    function bar_text(){
-        var svg = d3.select("#bartext")
-        svg.append("g")
-            .append("text")
-            .attr("x",120)
-            .attr("y",20)
-            .attr("fill","black")
-            .text("The first bar chart list almost all detail information in the selected game. The second bar chart shows percentage comparison in key metrics.")
-            .attr("font-size","17px")
-        }
+//    function bar_text(){
+//        var svg = d3.select("#bartext")
+//        svg.append("g")
+//            .append("text")
+//            .attr("x",120)
+//            .attr("y",20)
+//            .attr("fill","black")
+//            .text("The first bar chart list almost all detail information in the selected game. The second bar chart shows percentage comparison in key metrics.")
+//            .attr("font-size","17px")
+//        }
 
 
 
@@ -931,7 +930,7 @@ path.area {
     // }
     function detail(team1_detail,team2_detail){
         negativeBarChart(team1_detail, team2_detail);
-        bar_text();
+//        bar_text();
         detail_1(team1_detail);
         detail_2(team2_detail);
         
@@ -2544,6 +2543,7 @@ var tooltip = d3.select("body").append("div")
       .text(function(d) { return d;})
 });
 
+
 }
 </script>
 <div>
@@ -2582,6 +2582,7 @@ var tooltip = d3.select("body").append("div")
     <svg id='gauge4' width="16%" height="150"></svg>
     <svg id='gauge5' width="16%" height="150"></svg>
     <svg id='gauge6' width="16%" height="150"></svg>
+    <spqn id="information"></spqn>
     <span id='moreinfo1' ></span>
     <span id='moreinfo2' ></span>   
 </div>   
